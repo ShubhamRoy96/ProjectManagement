@@ -10,26 +10,30 @@ namespace ProjectManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase, IBaseController
+    public class UserController : ControllerBase, IBaseController<User>
     {
         List<User> usersList = new List<User>()
         {
-            new User(){ ID = 1, FirstName = "Shubham", LastName = "Roy", Email = "shubhamroy896@gmail.com", Password = "NotMyActualGmailPassword@401" },
-            new User(){ ID = 2, FirstName = "Amar", LastName = "Ojha", Email = "amar@gmail.com", Password = "NotAmarsActualGmailPassword@401" },
-            new User(){ ID = 3, FirstName = "Akbar", LastName = "Shahpuri", Email = "akbar@gmail.com", Password = "NotAkabarsActualGmailPassword@401" },
-            new User(){ ID = 4, FirstName = "Anthony", LastName = "Allen", Email = "anthony@gmail.com", Password = "NotAnthonysActualGmailPassword@401" }
+            new User(){ ID = 1, FirstName = "Shubham", LastName = "Roy", Email = "shubhamroy896@gmail.com", Password = "NotMyActualGmailPassword@401", UserType = "SuperUser" },
+            new User(){ ID = 2, FirstName = "Amar", LastName = "Ojha", Email = "amar@gmail.com", Password = "NotAmarsActualGmailPassword@401", UserType = "Normal" },
+            new User(){ ID = 3, FirstName = "Akbar", LastName = "Shahpuri", Email = "akbar@gmail.com", Password = "NotAkabarsActualGmailPassword@401", UserType = "Normal" },
+            new User(){ ID = 4, FirstName = "Anthony", LastName = "Allen", Email = "anthony@gmail.com", Password = "NotAnthonysActualGmailPassword@401", UserType = "Normal" }
         };
 
         [HttpPost]
-        public IActionResult Create()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Create(User newUser)
         {
-            throw new NotImplementedException();
-        }
-
-        [HttpDelete]
-        public void Delete()
-        {
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                if (GetUser(newUser.ID) == default(User))
+                {
+                    usersList.Add(newUser);
+                    return Ok("User added successfully.");
+                }
+            }
+            return BadRequest("Failed to add user");
         }
 
         [HttpGet]
@@ -45,15 +49,47 @@ namespace ProjectManagement.Controllers
         }
 
         [HttpGet]
-        public void RetrieveOne()
+        [Route("{ID}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult RetrieveByID(int ID)
         {
-            throw new NotImplementedException();
+            var retrievedUser = GetUser(ID);
+            if (retrievedUser == default(User))
+            {
+                return NotFound("User not found.");
+            }
+            return Ok(retrievedUser);
         }
 
         [HttpPut]
-        public void Update()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Update(User updatedUserData)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Insufficient data entered");
+            }
+            var newUpdatedUser = GetUser(updatedUserData.ID);
+            if (newUpdatedUser == default(User))
+            {
+                return NotFound($"User ID {updatedUserData.ID} not found");
+            }
+
+            newUpdatedUser.FirstName = updatedUserData.FirstName;
+            newUpdatedUser.LastName = updatedUserData.LastName;
+            newUpdatedUser.Email = updatedUserData.Email;
+            newUpdatedUser.Password = updatedUserData.Password;
+            newUpdatedUser.UserType = updatedUserData.UserType;
+
+            return Ok(newUpdatedUser);
+        }
+
+        User GetUser(int ID)
+        {
+            var retrievedUser = usersList.FirstOrDefault(user => user.ID == ID);
+            return retrievedUser;
         }
     }
 }

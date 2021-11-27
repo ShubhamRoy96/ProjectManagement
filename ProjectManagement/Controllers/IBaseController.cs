@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace ProjectManagement.Controllers
 {
-    interface IBaseController
+    interface IBaseController<T>
     {
-        IActionResult Create();
+        IActionResult Create(T value);
         IActionResult RetrieveAll();
-        void RetrieveOne();
-        void Update();
-        void Delete();        
+        IActionResult RetrieveByID(int ID);
+        IActionResult Update(T value);        
     }
 }
