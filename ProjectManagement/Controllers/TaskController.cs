@@ -11,26 +11,31 @@ namespace ProjectManagement.Controllers
     [ApiController]
     public class TaskController : ControllerBase, IBaseController
     {
-        public void Create()
+        [HttpPost]
+        public IActionResult Create()
         {
             throw new NotImplementedException();
         }
 
+        [HttpDelete]
         public void Delete()
         {
             throw new NotImplementedException();
         }
 
-        public void RetrieveAll()
+        [HttpGet]
+        public IActionResult RetrieveAll()
         {
             throw new NotImplementedException();
         }
 
+        [HttpGet]
         public void RetrieveOne()
         {
             throw new NotImplementedException();
         }
 
+        [HttpPut]
         public void Update()
         {
             throw new NotImplementedException();
