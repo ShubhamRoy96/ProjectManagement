@@ -11,6 +11,7 @@ namespace ProjectManagement.Controllers
         IActionResult Create(T value);
         IActionResult RetrieveAll();
         IActionResult RetrieveByID(int ID);
-        IActionResult Update(T value);        
+        IActionResult Update(T value);
+        IActionResult Delete(int ID);
     }
 }

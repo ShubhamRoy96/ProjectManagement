@@ -86,6 +86,20 @@ namespace ProjectManagement.Controllers
             return Ok(newUpdatedProject);
         }
 
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Project))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Delete(int ID)
+        {
+            var retrievedProject = GetProject(ID);
+            if (retrievedProject == default(Project))
+            {
+                return BadRequest($"Project {ID} not found");
+            }
+            projectsList.Remove(retrievedProject);
+            return Ok($"Project {ID} deleted successfully");
+        }
+
         Project GetProject(int ID)
         {
             var retrievedProject = projectsList.FirstOrDefault(Project => Project.ID == ID);

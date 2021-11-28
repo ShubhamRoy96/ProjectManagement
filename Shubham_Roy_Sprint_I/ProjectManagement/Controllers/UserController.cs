@@ -40,6 +40,21 @@ namespace ProjectManagement.Controllers
             return BadRequest("Failed to add user");
         }
 
+        [Authorize]
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Delete(int ID)
+        {
+            var retrievedUser = GetUser(ID);
+            if (retrievedUser == default(User))
+            {
+                return BadRequest($"User {ID} not found");
+            }
+            usersList.Remove(retrievedUser);
+            return Ok($"User {ID} deleted successfully");
+        }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
