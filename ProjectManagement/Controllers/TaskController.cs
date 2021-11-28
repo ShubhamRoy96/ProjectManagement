@@ -31,7 +31,8 @@ namespace ProjectManagement.Controllers
                 {
                     newProjectTask.CreatedOn = DateTime.Now;
                     projectTasksList.Add(newProjectTask);
-                    return Ok("ProjectTask created successfully.");
+                    return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host +
+                "/" + HttpContext.Request.Path + "/" + newProjectTask.ID, newProjectTask);
                 }
             }
             return BadRequest("Failed to create ProjectTask");

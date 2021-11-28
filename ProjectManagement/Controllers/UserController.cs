@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ProjectManagement.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjectManagement.Controllers
 {
@@ -14,23 +15,26 @@ namespace ProjectManagement.Controllers
     {
         List<User> usersList = new List<User>()
         {
-            new User(){ ID = 1, FirstName = "Shubham", LastName = "Roy", Email = "shubhamroy896@gmail.com", Password = "NotMyActualGmailPassword@401", UserType = "SuperUser" },
-            new User(){ ID = 2, FirstName = "Amar", LastName = "Ojha", Email = "amar@gmail.com", Password = "NotAmarsActualGmailPassword@401", UserType = "Normal" },
-            new User(){ ID = 3, FirstName = "Akbar", LastName = "Shahpuri", Email = "akbar@gmail.com", Password = "NotAkabarsActualGmailPassword@401", UserType = "Normal" },
-            new User(){ ID = 4, FirstName = "Anthony", LastName = "Allen", Email = "anthony@gmail.com", Password = "NotAnthonysActualGmailPassword@401", UserType = "Normal" }
+            new User(){ ID = 1, FirstName = "Shubham", LastName = "Roy", Email = "shubhamroy896@gmail.com", Password = "NotMyActualGmailPassword@401"},
+            new User(){ ID = 2, FirstName = "Amar", LastName = "Ojha", Email = "amar@gmail.com", Password = "NotAmarsActualGmailPassword@401"},
+            new User(){ ID = 3, FirstName = "Akbar", LastName = "Shahpuri", Email = "akbar@gmail.com", Password = "NotAkabarsActualGmailPassword@401"},
+            new User(){ ID = 4, FirstName = "Anthony", LastName = "Allen", Email = "anthony@gmail.com", Password = "NotAnthonysActualGmailPassword@401"}
         };
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IActionResult Create(User newUser)
         {
             if (ModelState.IsValid)
             {
                 if (GetUser(newUser.ID) == default(User))
                 {
-                    usersList.Add(newUser);
-                    return Ok("User added successfully.");
+                    usersList.Add(newUser);                    
+                    return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host +
+                "/" + HttpContext.Request.Path + "/" + newUser.ID, newUser);
                 }
             }
             return BadRequest("Failed to add user");
@@ -61,10 +65,11 @@ namespace ProjectManagement.Controllers
             }
             return Ok(retrievedUser);
         }
-
+        
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IActionResult Update(User updatedUserData)
         {
             if (!ModelState.IsValid)
@@ -80,8 +85,7 @@ namespace ProjectManagement.Controllers
             newUpdatedUser.FirstName = updatedUserData.FirstName;
             newUpdatedUser.LastName = updatedUserData.LastName;
             newUpdatedUser.Email = updatedUserData.Email;
-            newUpdatedUser.Password = updatedUserData.Password;
-            newUpdatedUser.UserType = updatedUserData.UserType;
+            newUpdatedUser.Password = updatedUserData.Password;            
 
             return Ok(newUpdatedUser);
         }

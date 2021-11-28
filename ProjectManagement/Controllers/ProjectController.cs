@@ -31,7 +31,8 @@ namespace ProjectManagement.Controllers
                 {
                     newProject.CreatedOn = DateTime.Now;
                     projectsList.Add(newProject);
-                    return Ok("Project created successfully.");
+                    return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host +
+                "/" + HttpContext.Request.Path + "/" + newProject.ID, newProject);
                 }
             }
             return BadRequest("Failed to create Project");
