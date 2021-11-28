@@ -43,13 +43,13 @@ namespace ProjectManagement.Controllers
         [Authorize]
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete(int ID)
         {
             var retrievedUser = GetUser(ID);
             if (retrievedUser == default(User))
             {
-                return BadRequest($"User {ID} not found");
+                return NotFound($"User {ID} not found");
             }
             usersList.Remove(retrievedUser);
             return Ok($"User {ID} deleted successfully");
@@ -85,6 +85,7 @@ namespace ProjectManagement.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Update(User updatedUserData)
         {
             if (!ModelState.IsValid)

@@ -67,6 +67,7 @@ namespace ProjectManagement.Controllers
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectTask))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Update(ProjectTask updatedProjectTaskData)
         {
             if (!ModelState.IsValid)
@@ -91,13 +92,13 @@ namespace ProjectManagement.Controllers
 
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectTask))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete(int ID)
         {
             var retrievedTask = GetProjectTask(ID);
             if (retrievedTask == default(ProjectTask))
             {
-                return BadRequest($"Task {ID} not found");
+                return NotFound($"Task {ID} not found");
             }
             projectTasksList.Remove(retrievedTask);
             return Ok($"Task {ID} deleted successfully");
