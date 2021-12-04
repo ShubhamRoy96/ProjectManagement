@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjectManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProjectManagement.Controllers
 {
-    interface IBaseController<T>
+    public interface IRepository<T>
     {
         IActionResult Create(T value);
         IActionResult RetrieveAll();

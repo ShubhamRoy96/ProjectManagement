@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProjectManagement.Controllers;
+using ProjectManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,8 +81,10 @@ namespace ProjectManagement
                         ValidateAudience = false
                     };
                 });
-            services.AddSingleton<IJwtAuthenticationManager>(new JwtAuthticationManager(key));
-
+            services.AddSingleton<IJwtAuthenticationManager>(new JwtAuthticationManager(key));            
+            services.AddSingleton<IRepository<User>, UserMockController>();
+            services.AddSingleton<IRepository<ProjectTask>, TaskMockController>();
+            services.AddSingleton<IRepository<Project>, ProjectMockController>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
