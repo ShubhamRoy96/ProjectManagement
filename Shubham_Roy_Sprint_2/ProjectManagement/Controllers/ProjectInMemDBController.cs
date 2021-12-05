@@ -18,6 +18,7 @@ namespace ProjectManagement.Controllers
 
         public Project Create(Project Project)
         {
+            Project.CreatedOn = DateTime.Now;
             _dbContext.Projects.Add(Project);
             _dbContext.SaveChanges();
             return RetrieveByID(Project.ID);

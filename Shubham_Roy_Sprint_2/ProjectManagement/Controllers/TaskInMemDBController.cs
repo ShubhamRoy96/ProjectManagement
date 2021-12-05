@@ -18,6 +18,7 @@ namespace ProjectManagement.Controllers
 
         public ProjectTask Create(ProjectTask ProjectTask)
         {
+            ProjectTask.CreatedOn = DateTime.Now;
             _dbContext.ProjectTasks.Add(ProjectTask);
             _dbContext.SaveChanges();
             return RetrieveByID(ProjectTask.ID);

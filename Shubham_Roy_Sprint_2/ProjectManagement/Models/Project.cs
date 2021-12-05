@@ -14,6 +14,6 @@ namespace ProjectManagement.Models
         [Required]
         public string Name { get; set; }
         public string Detail { get; set; }        
-        internal DateTime CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 }

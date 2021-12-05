@@ -16,6 +16,6 @@ namespace ProjectManagement.Models
         public int AssignedToUserID { get; set; }
         [Required]
         public string Detail { get; set; }
-        internal DateTime CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 }
