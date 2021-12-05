@@ -83,10 +83,10 @@ namespace ProjectManagement
                     };
                 });
             services.AddSingleton<IJwtAuthenticationManager>(new JwtAuthticationManager(key));
-            services.AddDbContextPool<ProjectManagementDbContext>(options =>
+            services.AddDbContext<ProjectManagementDbContext>(options =>
             {
                 options.UseInMemoryDatabase("ProjectManagementDatabase");
-            });
+            }, contextLifetime: ServiceLifetime.Singleton);
             services.AddSingleton<IRepository<User>, UserInMemDBController>();
             services.AddSingleton<IRepository<ProjectTask>, TaskInMemDBController>();
             services.AddSingleton<IRepository<Project>, ProjectInMemDBController>();
@@ -116,6 +116,8 @@ namespace ProjectManagement
                 endpoints.MapControllers();
             });
 
+            var context = app.ApplicationServices.GetRequiredService<ProjectManagementDbContext>();
+            SeedDataGenerator.GenerateSeedData(context);
         }
     }
 }
