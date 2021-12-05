@@ -29,7 +29,12 @@ namespace ProjectManagement.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IActionResult Create(User newUser)
         {
-            return _repository.Create(newUser);
+            if (ModelState.IsValid)
+            {
+                var createdUser = _repository.Create(newUser);
+                return Created($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/{HttpContext.Request.Path}/{createdUser.ID}", createdUser);
+            }
+            return BadRequest("Failed to add user");
         }
 
         [Authorize]
@@ -38,7 +43,12 @@ namespace ProjectManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete(int ID)
         {
-            return _repository.Delete(ID);
+            var isSuccess = _repository.Delete(ID);
+            if (!isSuccess)
+            {
+                return NotFound($"User {ID} not found");
+            }
+            return Ok($"User {ID} deleted successfully");
         }
 
         [HttpGet]
@@ -46,7 +56,13 @@ namespace ProjectManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult RetrieveAll()
         {
-            return _repository.RetrieveAll();
+            var allUsers = _repository.RetrieveAll();
+
+            if (allUsers.Count <= 0)
+            {
+                return NotFound("No Users found");
+            }
+            return Ok(allUsers);
         }
 
         [HttpGet]
@@ -55,7 +71,13 @@ namespace ProjectManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult RetrieveByID(int ID)
         {
-            return _repository.RetrieveByID(ID);
+            var foundUser = _repository.RetrieveByID(ID);
+                        
+            if (foundUser == null)
+            {
+                return NotFound("User not found.");
+            }
+            return Ok(foundUser);
         }
 
         [HttpPut]
@@ -65,7 +87,16 @@ namespace ProjectManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Update(User updatedUserData)
         {
-            return _repository.Update(updatedUserData);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Insufficient data entered");
+            }
+            var updatedData = _repository.Update(updatedUserData);
+            if (updatedData == null)
+            {
+                return NotFound($"User {updatedUserData.ID} not found");
+            }
+            return Ok(updatedData);
         }
     }
 }

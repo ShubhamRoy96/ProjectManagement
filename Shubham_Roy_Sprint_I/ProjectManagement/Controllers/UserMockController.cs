@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ProjectManagement.Controllers
 {
-    public class UserMockController : ControllerBase, IRepository<User>
+    public class UserMockController : IRepository<User>
     {
         List<User> usersList = new List<User>()
         {
@@ -18,74 +18,61 @@ namespace ProjectManagement.Controllers
             new User(){ ID = 3, FirstName = "Akbar", LastName = "Shahpuri", Email = "akbar@gmail.com", Password = "NotAkabarsActualGmailPassword@401"},
             new User(){ ID = 4, FirstName = "Anthony", LastName = "Allen", Email = "anthony@gmail.com", Password = "NotAnthonysActualGmailPassword@401"}
         };
-                
-        public IActionResult Create(User newUser)
+
+        public User Create(User newUser)
         {
-            if (ModelState.IsValid)
+            if (GetUser(newUser.ID) == null)
             {
-                if (GetUser(newUser.ID) == default(User))
-                {
-                    usersList.Add(newUser);                    
-                    return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host +
-                "/" + HttpContext.Request.Path + "/" + newUser.ID, newUser);
-                }
+                usersList.Add(newUser);
             }
-            return BadRequest("Failed to add user");
+            else
+                return null;
+            return GetUser(newUser.ID);
         }
-                
-        public IActionResult Delete(int ID)
+
+        public bool Delete(int ID)
         {
+            var isSuccess = false;
             var retrievedUser = GetUser(ID);
-            if (retrievedUser == default(User))
+            if (retrievedUser != null)
             {
-                return NotFound($"User {ID} not found");
+                usersList.Remove(retrievedUser);
+                isSuccess = true;
             }
-            usersList.Remove(retrievedUser);
-            return Ok($"User {ID} deleted successfully");
-        }
-                
-        public IActionResult RetrieveAll()
-        {
-            if (usersList.Count <= 0)
-            {
-                return NotFound();
-            }
-            return Ok(usersList);
+            
+            return isSuccess;
         }
 
-        public IActionResult RetrieveByID(int ID)
+        public List<User> RetrieveAll()
         {
-            var retrievedUser = GetUser(ID);
-            if (retrievedUser == default(User))
-            {
-                return NotFound("User not found.");
-            }
-            return Ok(retrievedUser);
+            return usersList;
         }
-        
-        public IActionResult Update(User updatedUserData)
+
+        public User RetrieveByID(int ID)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Insufficient data entered");
-            }
-            var newUpdatedUser = GetUser(updatedUserData.ID);
-            if (newUpdatedUser == default(User))
-            {
-                return NotFound($"User ID {updatedUserData.ID} not found");
-            }
+            var retrievedUser = GetUser(ID);            
+            return retrievedUser;
+        }
 
-            newUpdatedUser.FirstName = updatedUserData.FirstName;
-            newUpdatedUser.LastName = updatedUserData.LastName;
-            newUpdatedUser.Email = updatedUserData.Email;
-            newUpdatedUser.Password = updatedUserData.Password;            
-
-            return Ok(newUpdatedUser);
+        public User Update(User updatedUserData)
+        {            
+            var existingUser = GetUser(updatedUserData.ID);
+            if (existingUser == null)
+            {
+                return null;
+            }
+            usersList.Remove(existingUser);
+            usersList.Add(updatedUserData);
+            return GetUser(updatedUserData.ID);
         }
 
         User GetUser(int ID)
         {
             var retrievedUser = usersList.FirstOrDefault(user => user.ID == ID);
+            if (retrievedUser == default(User))
+            {
+                return null;
+            }
             return retrievedUser;
         }
     }

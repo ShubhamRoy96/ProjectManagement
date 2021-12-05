@@ -18,73 +18,60 @@ namespace ProjectManagement.Controllers
             new Project(){ ID = 4, Name = "Project 4", Detail = "A small project", CreatedOn = new DateTime(2021,9,3) }
         };
 
-        public IActionResult Create(Project newProject)
+        public Project Create(Project newProject)
         {
-            if (ModelState.IsValid)
+            if (GetProject(newProject.ID) == null)
             {
-                if (GetProject(newProject.ID) == default(Project))
-                {
-                    newProject.CreatedOn = DateTime.Now;
-                    projectsList.Add(newProject);
-                    return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host +
-                "/" + HttpContext.Request.Path + "/" + newProject.ID, newProject);
-                }
+                projectsList.Add(newProject);
             }
-            return BadRequest("Failed to create Project");
+            else
+                return null;
+            return GetProject(newProject.ID);
         }
 
-        public IActionResult RetrieveAll()
+        public bool Delete(int ID)
         {
-            if (projectsList.Count <= 0)
+            var isSuccess = false;
+            var retrievedProject = GetProject(ID);
+            if (retrievedProject != null)
             {
-                return NotFound();
+                projectsList.Remove(retrievedProject);
+                isSuccess = true;
             }
-            return Ok(projectsList);
+
+            return isSuccess;
         }
 
-        public IActionResult RetrieveByID(int ID)
+        public List<Project> RetrieveAll()
+        {
+            return projectsList;
+        }
+
+        public Project RetrieveByID(int ID)
         {
             var retrievedProject = GetProject(ID);
-            if (retrievedProject == default(Project))
-            {
-                return NotFound("Project not found.");
-            }
-            return Ok(retrievedProject);
+            return retrievedProject;
         }
 
-        public IActionResult Update(Project updatedProjectData)
+        public Project Update(Project updatedProjectData)
         {
-            if (!ModelState.IsValid)
+            var existingProject = GetProject(updatedProjectData.ID);
+            if (existingProject == null)
             {
-                return BadRequest("Insufficient data entered");
+                return null;
             }
-            var newUpdatedProject = GetProject(updatedProjectData.ID);
-            if (newUpdatedProject == default(Project))
-            {
-                return NotFound($"Project ID {updatedProjectData.ID} not found");
-            }
-
-            newUpdatedProject.Name = updatedProjectData.Name;
-            newUpdatedProject.Detail = updatedProjectData.Detail;
-            newUpdatedProject.CreatedOn = updatedProjectData.CreatedOn;
-
-            return Ok(newUpdatedProject);
-        }
-
-        public IActionResult Delete(int ID)
-        {
-            var retrievedProject = GetProject(ID);
-            if (retrievedProject == default(Project))
-            {
-                return NotFound($"Project {ID} not found");
-            }
-            projectsList.Remove(retrievedProject);
-            return Ok($"Project {ID} deleted successfully");
+            projectsList.Remove(existingProject);
+            projectsList.Add(updatedProjectData);
+            return GetProject(updatedProjectData.ID);
         }
 
         Project GetProject(int ID)
         {
-            var retrievedProject = projectsList.FirstOrDefault(Project => Project.ID == ID);
+            var retrievedProject = projectsList.FirstOrDefault(project => project.ID == ID);
+            if (retrievedProject == default(Project))
+            {
+                return null;
+            }
             return retrievedProject;
         }
     }

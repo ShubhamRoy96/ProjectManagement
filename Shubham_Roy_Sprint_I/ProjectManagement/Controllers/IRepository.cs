@@ -9,10 +9,10 @@ namespace ProjectManagement.Controllers
 {
     public interface IRepository<T>
     {
-        IActionResult Create(T value);
-        IActionResult RetrieveAll();
-        IActionResult RetrieveByID(int ID);
-        IActionResult Update(T value);
-        IActionResult Delete(int ID);
+        T Create(T value);
+        List<T> RetrieveAll();
+        T RetrieveByID(int ID);
+        T Update(T value);
+        bool Delete(int ID);
     }
 }

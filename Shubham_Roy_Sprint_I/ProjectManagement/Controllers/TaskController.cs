@@ -23,7 +23,12 @@ namespace ProjectManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Create(ProjectTask newProjectTask)
         {
-            return _repository.Create(newProjectTask);
+            if (ModelState.IsValid)
+            {
+                var createdTask = _repository.Create(newProjectTask);
+                return Created($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/{HttpContext.Request.Path}/{createdTask.ID}", createdTask);
+            }
+            return BadRequest("Failed to create ProjectTask");
         }
 
         [HttpGet]
@@ -31,7 +36,12 @@ namespace ProjectManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult RetrieveAll()
         {
-            return _repository.RetrieveAll();
+            var retrievedTasks = _repository.RetrieveAll();
+            if (retrievedTasks.Count <= 0)
+            {
+                return NotFound("No Tasks found");
+            }
+            return Ok(retrievedTasks);
         }
 
         [HttpGet]
@@ -40,7 +50,12 @@ namespace ProjectManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult RetrieveByID(int ID)
         {
-            return _repository.RetrieveByID(ID);
+            var retrievedTask = _repository.RetrieveByID(ID);            
+            if (retrievedTask == null)
+            {
+                return NotFound("ProjectTask not found.");
+            }
+            return Ok(retrievedTask);
         }
 
         [HttpPut]
@@ -49,7 +64,16 @@ namespace ProjectManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Update(ProjectTask updatedProjectTaskData)
         {
-            return _repository.Update(updatedProjectTaskData);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Insufficient data entered");
+            }
+            var newUpdatedProjectTask = _repository.Update(updatedProjectTaskData);
+            if (newUpdatedProjectTask == null)
+            {
+                return NotFound($"ProjectTask ID {updatedProjectTaskData.ID} not found");
+            }
+            return Ok(newUpdatedProjectTask);
         }
 
         [HttpDelete]
@@ -57,7 +81,12 @@ namespace ProjectManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete(int ID)
         {
-            return _repository.Delete(ID);
+            var isSuccess = _repository.Delete(ID);
+            if (!isSuccess)
+            {
+                return NotFound($"Task {ID} not found");
+            }
+            return Ok($"Task {ID} deleted successfully");
         }
     }
 }

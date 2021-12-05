@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -81,10 +82,15 @@ namespace ProjectManagement
                         ValidateAudience = false
                     };
                 });
-            services.AddSingleton<IJwtAuthenticationManager>(new JwtAuthticationManager(key));            
-            services.AddSingleton<IRepository<User>, UserMockController>();
-            services.AddSingleton<IRepository<ProjectTask>, TaskMockController>();
-            services.AddSingleton<IRepository<Project>, ProjectMockController>();
+            services.AddSingleton<IJwtAuthenticationManager>(new JwtAuthticationManager(key));
+            services.AddDbContextPool<ProjectManagementDbContext>(options =>
+            {
+                options.UseInMemoryDatabase("ProjectManagementDatabase");
+            });
+            services.AddSingleton<IRepository<User>, UserInMemDBController>();
+            services.AddSingleton<IRepository<ProjectTask>, TaskInMemDBController>();
+            services.AddSingleton<IRepository<Project>, ProjectInMemDBController>();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProjectManagement.Controllers
 {
-    public class TaskMockController : ControllerBase, IRepository<ProjectTask>
+    public class TaskMockController : IRepository<ProjectTask>
     {
         List<ProjectTask> projectTasksList = new List<ProjectTask>()
         {
@@ -18,76 +18,63 @@ namespace ProjectManagement.Controllers
             new ProjectTask(){ ID = 4, ProjectID = 4, Status = 4, AssignedToUserID = 3, Detail = "An Awesome task!", CreatedOn = new DateTime(2021,5,21)},
         };
                 
-        public IActionResult Create(ProjectTask newProjectTask)
+        public ProjectTask Create(ProjectTask newProjectTask)
         {
-            if (ModelState.IsValid)
+            if (GetProjectTask(newProjectTask.ID) == null)
             {
-                if (GetProjectTask(newProjectTask.ID) == default(ProjectTask))
-                {
-                    newProjectTask.CreatedOn = DateTime.Now;
-                    projectTasksList.Add(newProjectTask);
-                    return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host +
-                "/" + HttpContext.Request.Path + "/" + newProjectTask.ID, newProjectTask);
-                }
+                newProjectTask.CreatedOn = DateTime.Now;
+                projectTasksList.Add(newProjectTask);
             }
-            return BadRequest("Failed to create ProjectTask");
+            else
+                return null;
+            
+            return RetrieveByID(newProjectTask.ID);
         }
 
-        public IActionResult RetrieveAll()
+        public List<ProjectTask> RetrieveAll()
         {
-            if (projectTasksList.Count <= 0)
-            {
-                return NotFound();
-            }
-            return Ok(projectTasksList);
+            return projectTasksList;
         }
 
-        public IActionResult RetrieveByID(int ID)
+        public ProjectTask RetrieveByID(int ID)
         {
-            var retrievedProjectTask = GetProjectTask(ID);
-            if (retrievedProjectTask == default(ProjectTask))
-            {
-                return NotFound("ProjectTask not found.");
-            }
-            return Ok(retrievedProjectTask);
+            var retrievedProjectTask = GetProjectTask(ID);            
+            return retrievedProjectTask;
         }
 
-        public IActionResult Update(ProjectTask updatedProjectTaskData)
-        {
-            if (!ModelState.IsValid)
+        public ProjectTask Update(ProjectTask updatedProjectTaskData)
+        {            
+            var existingProjectTask = GetProjectTask(updatedProjectTaskData.ID);
+            if (existingProjectTask == null)
             {
-                return BadRequest("Insufficient data entered");
-            }
-            var newUpdatedProjectTask = GetProjectTask(updatedProjectTaskData.ID);
-            if (newUpdatedProjectTask == default(ProjectTask))
-            {
-                return NotFound($"ProjectTask ID {updatedProjectTaskData.ID} not found");
+                return null;
             }
 
-            newUpdatedProjectTask.ID = updatedProjectTaskData.ID;
-            newUpdatedProjectTask.ProjectID = updatedProjectTaskData.ProjectID;
-            newUpdatedProjectTask.Status = updatedProjectTaskData.Status;
-            newUpdatedProjectTask.AssignedToUserID = updatedProjectTaskData.AssignedToUserID;
-            newUpdatedProjectTask.Detail = updatedProjectTaskData.Detail;
-            newUpdatedProjectTask.CreatedOn = updatedProjectTaskData.CreatedOn;
+            projectTasksList.Remove(existingProjectTask);
+            projectTasksList.Add(updatedProjectTaskData);
 
-            return Ok(newUpdatedProjectTask);
+            return GetProjectTask(updatedProjectTaskData.ID);
         }
 
-        public IActionResult Delete(int ID)
+        public bool Delete(int ID)
         {
+            var isSuccess = false;
             var retrievedTask = GetProjectTask(ID);
-            if (retrievedTask == default(ProjectTask))
+            if (retrievedTask != null)
             {
-                return NotFound($"Task {ID} not found");
+                projectTasksList.Remove(retrievedTask);
+                isSuccess = true;
             }
-            projectTasksList.Remove(retrievedTask);
-            return Ok($"Task {ID} deleted successfully");
+            return isSuccess;
         }
 
         ProjectTask GetProjectTask(int ID)
         {
-            var retrievedProjectTask = projectTasksList.FirstOrDefault(ProjectTask => ProjectTask.ID == ID);
+            var retrievedProjectTask = projectTasksList.FirstOrDefault(projectTask => projectTask.ID == ID);
+            if (retrievedProjectTask == default(ProjectTask))
+            {
+                return null;
+            }
             return retrievedProjectTask;
         }
     }
