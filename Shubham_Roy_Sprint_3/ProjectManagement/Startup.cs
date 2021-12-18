@@ -87,9 +87,9 @@ namespace ProjectManagement
             {
                 options.UseInMemoryDatabase("ProjectManagementDatabase");
             }, contextLifetime: ServiceLifetime.Singleton);
-            services.AddSingleton<IRepository<User>, UserInMemDBController>();
-            services.AddSingleton<IRepository<ProjectTask>, TaskInMemDBController>();
-            services.AddSingleton<IRepository<Project>, ProjectInMemDBController>();
+            services.AddSingleton<IRepository<User>, UserMockController>();
+            services.AddSingleton<IRepository<ProjectTask>, TaskMockController>();
+            services.AddSingleton<IRepository<Project>, ProjectMockController>();
            
         }
 

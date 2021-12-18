@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManagement.Models;
 using System;
@@ -59,6 +60,7 @@ namespace ProjectManagement.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectTask))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -77,6 +79,7 @@ namespace ProjectManagement.Controllers
         }
 
         [HttpDelete]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectTask))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete(int ID)

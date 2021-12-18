@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using ProjectManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,10 +14,10 @@ namespace ProjectManagement.Controllers
     {
         readonly string key;
 
-        readonly Dictionary<string, string> adminUsers = new Dictionary<string, string>()
+        readonly List<User> adminUsers = new List<User>()
         {
-            {"SuperAdmin1", "SuperPwd1" },
-            {"SuperAdmin2", "SuperPwd2" }
+            new User{ ID = 420, FirstName = "SuperAdmin1", LastName = "", Password = "SuperPwd1", Email = ""},
+            new User{ ID = 420, FirstName = "SuperAdmin2", LastName = "", Password = "SuperPwd2", Email = ""}
         };
 
         public JwtAuthticationManager(string key)
@@ -24,9 +25,9 @@ namespace ProjectManagement.Controllers
             this.key = key;
         }
 
-        public string Authenticate(string username, string password)
+        public string Authenticate(User loginAdminUser)
         {
-            if (!adminUsers.Any(user => user.Key == username && user.Value == password))
+            if (!adminUsers.Any(user => user.FirstName == loginAdminUser.FirstName && user.Password == loginAdminUser.Password))
             {
                 return null;
             }            
@@ -36,7 +37,7 @@ namespace ProjectManagement.Controllers
                 Expires = DateTime.UtcNow.AddHours(12),
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, username)
+                    new Claim(ClaimTypes.Name, loginAdminUser.FirstName)
                 }),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256)
                 

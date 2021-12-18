@@ -76,6 +76,7 @@ namespace ProjectManagement.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Project))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
