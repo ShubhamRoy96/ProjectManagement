@@ -12,8 +12,9 @@ using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Reflection;
 using Xunit.Sdk;
+using System.Linq;
 
-namespace ProjectManagementTests
+namespace ProjectManagement
 {
     public class ProjectManagementTests : IClassFixture<WebApplicationFactory<ProjectManagement.Startup>>
     {
@@ -167,7 +168,7 @@ namespace ProjectManagementTests
         }
 
         [Theory]
-        [InlineData(3)]
+        [InlineData(2)]
         public async void GetTaskByID(int id)
         {
             var url = $"/api/Task/{id}";
@@ -181,7 +182,7 @@ namespace ProjectManagementTests
         }
 
         [Theory]
-        [InlineData(4)]
+        [InlineData(2)]
         public async void GetUserByID(int id)
         {
             var url = $"/api/User/{id}";
@@ -195,7 +196,7 @@ namespace ProjectManagementTests
         }
 
         [Theory]
-        [InlineData(2)]
+        [InlineData(1)]
         public async void DeleteProject(int id)
         {
             var url = $"/api/Project?ID={id}";
@@ -208,7 +209,7 @@ namespace ProjectManagementTests
         }
 
         [Theory]
-        [InlineData(3)]
+        [InlineData(1)]
         public async void DeleteTask(int id)
         {
             var url = $"/api/Task?ID={id}";
@@ -221,7 +222,7 @@ namespace ProjectManagementTests
         }
 
         [Theory]
-        [InlineData(4)]
+        [InlineData(1)]
         public async void DeleteUser(int id)
         {
             var url = $"/api/User?ID={id}";
@@ -234,7 +235,7 @@ namespace ProjectManagementTests
         }
 
         [Theory]
-        [InlineData(1, "test 1", "detail 1")]
+        [InlineData(3, "test 1", "detail 1")]
         public async void UpdateProject(int id, string name, string detail)
         {
             var url = "/api/Project";
@@ -259,7 +260,7 @@ namespace ProjectManagementTests
         }
 
         [Theory]
-        [InlineData(1, 10, 20, 2)]
+        [InlineData(3, 10, 20, 2)]
         public async void UpdateProjectTask(int id, int projectID, int assignedUserId, int status)
         {
             var url = "/api/Task";
@@ -286,7 +287,7 @@ namespace ProjectManagementTests
         }
 
         [Theory]
-        [InlineData(2, "test A", "surname A", "emailA@gmail.com", "pwdA")]
+        [InlineData(3, "test A", "surname A", "emailA@gmail.com", "pwdA")]
         public async void UpdateUser(int id, string firstName, string lastName, string email, string password)
         {
             var url = "/api/User";
@@ -337,10 +338,15 @@ namespace ProjectManagementTests
 
             var responseData = await response.Content.ReadFromJsonAsync(typeof(List<Project>));
             List<Project> allProjects = (List<Project>)responseData;
-            Assert.Equal(GetAllTestProjects(), allProjects);
+
+            //var differences = GetAllTestProjects().Except(allProjects).ToList();
+            var test = GetAllTestProjects().SequenceEqual(allProjects);
+            //Assert.Null(differences);
+
+            //Assert.Equal(GetAllTestProjects() == allProjects);
         }
 
-        private IEnumerable<Project> GetAllTestProjects()
+        private List<Project> GetAllTestProjects()
         {
             return new List<Project>()
             {
