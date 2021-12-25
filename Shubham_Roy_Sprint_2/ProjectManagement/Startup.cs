@@ -10,13 +10,18 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ProjectManagement.Controllers;
 using ProjectManagement.Models;
+using Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Infrastructure.Persistence;
+using ProjectManagement.Common.Interfaces;
+using ProjectManagement.Services;
+using ProjectManagement.Controllers.DBController;
+using ProjectManagement.Controllers.MockController;
 
 namespace ProjectManagement
 {
@@ -83,10 +88,7 @@ namespace ProjectManagement
                     };
                 });
             services.AddSingleton<IJwtAuthenticationManager>(new JwtAuthticationManager(key));
-            services.AddDbContext<ProjectManagementDbContext>(options =>
-            {
-                options.UseInMemoryDatabase("ProjectManagementDatabase");
-            }, contextLifetime: ServiceLifetime.Singleton);
+            services.AddDatabaseLayer();
             services.AddSingleton<IRepository<User>, UserInMemDBController>();
             services.AddSingleton<IRepository<ProjectTask>, TaskInMemDBController>();
             services.AddSingleton<IRepository<Project>, ProjectInMemDBController>();

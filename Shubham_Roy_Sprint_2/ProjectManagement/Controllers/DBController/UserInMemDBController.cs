@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Infrastructure.Persistence;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using ProjectManagement.Common.Interfaces;
 using ProjectManagement.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace ProjectManagement.Controllers
+namespace ProjectManagement.Controllers.DBController
 {
     public class UserInMemDBController : IRepository<User>
     {
@@ -51,7 +53,7 @@ namespace ProjectManagement.Controllers
 
         public User RetrieveByID(int ID)
         {
-            var foundUser = _dbContext.Users.FirstOrDefault(user => user.ID == ID);            
+            var foundUser = _dbContext.Users.FirstOrDefault(user => user.ID == ID);
             return foundUser;
         }
 

@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProjectManagement.Common.Interfaces;
 using ProjectManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProjectManagement.Controllers
+namespace ProjectManagement.Controllers.MockController
 {
     public class TaskMockController : IRepository<ProjectTask>
     {
@@ -17,7 +18,7 @@ namespace ProjectManagement.Controllers
             new ProjectTask(){ ID = 3, ProjectID = 3, Status = 3, AssignedToUserID = 4, Detail = "A boring task", CreatedOn = new DateTime(2021,3,14)},
             new ProjectTask(){ ID = 4, ProjectID = 4, Status = 4, AssignedToUserID = 3, Detail = "An Awesome task!", CreatedOn = new DateTime(2021,5,21)},
         };
-                
+
         public ProjectTask Create(ProjectTask newProjectTask)
         {
             if (GetProjectTask(newProjectTask.ID) == null)
@@ -27,7 +28,7 @@ namespace ProjectManagement.Controllers
             }
             else
                 return null;
-            
+
             return RetrieveByID(newProjectTask.ID);
         }
 
@@ -38,12 +39,12 @@ namespace ProjectManagement.Controllers
 
         public ProjectTask RetrieveByID(int ID)
         {
-            var retrievedProjectTask = GetProjectTask(ID);            
+            var retrievedProjectTask = GetProjectTask(ID);
             return retrievedProjectTask;
         }
 
         public ProjectTask Update(ProjectTask updatedProjectTaskData)
-        {            
+        {
             var existingProjectTask = GetProjectTask(updatedProjectTaskData.ID);
             if (existingProjectTask == null)
             {

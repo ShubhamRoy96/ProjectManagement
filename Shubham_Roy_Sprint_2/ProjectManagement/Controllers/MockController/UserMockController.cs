@@ -6,8 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using ProjectManagement.Models;
 using Microsoft.AspNetCore.Authorization;
+using ProjectManagement.Common.Interfaces;
 
-namespace ProjectManagement.Controllers
+namespace ProjectManagement.Controllers.MockController
 {
     public class UserMockController : IRepository<User>
     {
@@ -39,7 +40,7 @@ namespace ProjectManagement.Controllers
                 usersList.Remove(retrievedUser);
                 isSuccess = true;
             }
-            
+
             return isSuccess;
         }
 
@@ -50,12 +51,12 @@ namespace ProjectManagement.Controllers
 
         public User RetrieveByID(int ID)
         {
-            var retrievedUser = GetUser(ID);            
+            var retrievedUser = GetUser(ID);
             return retrievedUser;
         }
 
         public User Update(User updatedUserData)
-        {            
+        {
             var existingUser = GetUser(updatedUserData.ID);
             if (existingUser == null)
             {

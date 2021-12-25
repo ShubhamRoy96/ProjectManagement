@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Exception\" />
+    <Folder Include="Event\" />
+    <Folder Include="Enum\" />
+    <Folder Include="Common\" />
+  </ItemGroup>
+
+</Project>

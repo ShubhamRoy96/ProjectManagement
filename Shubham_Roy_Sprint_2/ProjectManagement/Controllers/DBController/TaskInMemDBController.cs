@@ -1,11 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Infrastructure.Persistence;
+using Microsoft.Extensions.DependencyInjection;
+using ProjectManagement.Common.Interfaces;
 using ProjectManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProjectManagement.Controllers
+namespace ProjectManagement.Controllers.DBController
 {
     public class TaskInMemDBController : IRepository<ProjectTask>
     {

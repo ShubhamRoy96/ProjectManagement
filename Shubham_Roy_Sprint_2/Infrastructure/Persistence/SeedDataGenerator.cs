@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProjectManagement.Controllers
+namespace Infrastructure.Persistence
 {
     public class SeedDataGenerator
     {
-        static ProjectManagementDbContext _dbContext;        
+        static ProjectManagementDbContext _dbContext;
 
         public static void GenerateSeedData(ProjectManagementDbContext dbContext)
         {
