@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ProjectManagement.Models;
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Common.Interfaces
 {

@@ -1,17 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManagement.Common.Interfaces;
-using ProjectManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProjectManagement.Controllers.MockController
 {
     public class ProjectMockController : ControllerBase, IRepository<Project>
     {
-        List<Project> projectsList = new List<Project>()
+        private List<Project> projectsList = new List<Project>()
         {
             new Project(){ ID = 1, Name = "Project 1", Detail = "An Awesome project!", CreatedOn = new DateTime(2020,11,1) },
             new Project(){ ID = 2, Name = "Project 2", Detail = "Another Awesome project!", CreatedOn = new DateTime(2020,1,12) },
@@ -66,7 +64,7 @@ namespace ProjectManagement.Controllers.MockController
             return GetProject(updatedProjectData.ID);
         }
 
-        Project GetProject(int ID)
+        private Project GetProject(int ID)
         {
             var retrievedProject = projectsList.FirstOrDefault(project => project.ID == ID);
             if (retrievedProject == default(Project))

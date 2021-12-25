@@ -1,27 +1,18 @@
+using Domain.Entities;
+using Infrastructure;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ProjectManagement.Models;
-using Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Infrastructure.Persistence;
 using ProjectManagement.Common.Interfaces;
-using ProjectManagement.Services;
 using ProjectManagement.Controllers.DBController;
-using ProjectManagement.Controllers.MockController;
+using ProjectManagement.Services;
+using System.Text;
 
 namespace ProjectManagement
 {
@@ -37,7 +28,6 @@ namespace ProjectManagement
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -92,7 +82,6 @@ namespace ProjectManagement
             services.AddSingleton<IRepository<User>, UserInMemDBController>();
             services.AddSingleton<IRepository<ProjectTask>, TaskInMemDBController>();
             services.AddSingleton<IRepository<Project>, ProjectInMemDBController>();
-           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

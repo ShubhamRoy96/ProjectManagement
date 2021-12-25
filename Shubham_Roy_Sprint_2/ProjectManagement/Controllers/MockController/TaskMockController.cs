@@ -1,17 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Entities;
 using ProjectManagement.Common.Interfaces;
-using ProjectManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProjectManagement.Controllers.MockController
 {
     public class TaskMockController : IRepository<ProjectTask>
     {
-        List<ProjectTask> projectTasksList = new List<ProjectTask>()
+        private List<ProjectTask> projectTasksList = new List<ProjectTask>()
         {
             new ProjectTask(){ ID = 1, ProjectID = 1, Status = 1, AssignedToUserID = 1, Detail = "A task", CreatedOn = new DateTime(2021,12,1)},
             new ProjectTask(){ ID = 2, ProjectID = 2, Status = 2, AssignedToUserID = 2, Detail = "A good task", CreatedOn = new DateTime(2021,2,12)},
@@ -69,7 +66,7 @@ namespace ProjectManagement.Controllers.MockController
             return isSuccess;
         }
 
-        ProjectTask GetProjectTask(int ID)
+        private ProjectTask GetProjectTask(int ID)
         {
             var retrievedProjectTask = projectTasksList.FirstOrDefault(projectTask => projectTask.ID == ID);
             if (retrievedProjectTask == default(ProjectTask))

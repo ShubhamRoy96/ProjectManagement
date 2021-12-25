@@ -6,15 +6,14 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectManagement.Services
 {
     public class JwtAuthticationManager : IJwtAuthenticationManager
     {
-        readonly string key;
+        private readonly string key;
 
-        readonly Dictionary<string, string> adminUsers = new Dictionary<string, string>()
+        private readonly Dictionary<string, string> adminUsers = new Dictionary<string, string>()
         {
             {"SuperAdmin1", "SuperPwd1" },
             {"SuperAdmin2", "SuperPwd2" }
@@ -30,7 +29,7 @@ namespace ProjectManagement.Services
             if (!adminUsers.Any(user => user.Key == username && user.Value == password))
             {
                 return null;
-            }            
+            }
             var tokenKey = Encoding.ASCII.GetBytes(key);
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
@@ -40,7 +39,6 @@ namespace ProjectManagement.Services
                     new Claim(ClaimTypes.Name, username)
                 }),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256)
-                
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

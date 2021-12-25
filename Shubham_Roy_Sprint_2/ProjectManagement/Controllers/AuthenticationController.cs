@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManagement.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProjectManagement.Controllers
 {
@@ -12,7 +8,8 @@ namespace ProjectManagement.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        readonly IJwtAuthenticationManager jwtAuthenticationManager;
+        private readonly IJwtAuthenticationManager jwtAuthenticationManager;
+
         public AuthenticationController(IJwtAuthenticationManager jwtAuthenticationManager)
         {
             this.jwtAuthenticationManager = jwtAuthenticationManager;

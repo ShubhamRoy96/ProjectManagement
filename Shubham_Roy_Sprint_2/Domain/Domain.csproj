@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Exception\" />
-    <Folder Include="Event\" />
-    <Folder Include="Enum\" />
     <Folder Include="Common\" />
+    <Folder Include="Enums\" />
+    <Folder Include="Events\" />
+    <Folder Include="Exceptions\" />
   </ItemGroup>
 
 </Project>

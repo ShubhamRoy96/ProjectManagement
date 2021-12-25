@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManagement.Common.Interfaces;
-using ProjectManagement.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,7 +12,7 @@ namespace ProjectManagement.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        readonly IRepository<User> _repository;
+        private readonly IRepository<User> _repository;
 
         public UserController(IRepository<User> repository)
         {
@@ -73,7 +69,7 @@ namespace ProjectManagement.Controllers
         public IActionResult RetrieveByID(int ID)
         {
             var foundUser = _repository.RetrieveByID(ID);
-                        
+
             if (foundUser == null)
             {
                 return NotFound("User not found.");

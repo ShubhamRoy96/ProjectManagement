@@ -1,18 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Domain.Entities;
+using ProjectManagement.Common.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using ProjectManagement.Models;
-using Microsoft.AspNetCore.Authorization;
-using ProjectManagement.Common.Interfaces;
 
 namespace ProjectManagement.Controllers.MockController
 {
     public class UserMockController : IRepository<User>
     {
-        List<User> usersList = new List<User>()
+        private List<User> usersList = new List<User>()
         {
             new User(){ ID = 1, FirstName = "Shubham", LastName = "Roy", Email = "shubhamroy896@gmail.com", Password = "NotMyActualGmailPassword@401"},
             new User(){ ID = 2, FirstName = "Amar", LastName = "Ojha", Email = "amar@gmail.com", Password = "NotAmarsActualGmailPassword@401"},
@@ -67,7 +62,7 @@ namespace ProjectManagement.Controllers.MockController
             return GetUser(updatedUserData.ID);
         }
 
-        User GetUser(int ID)
+        private User GetUser(int ID)
         {
             var retrievedUser = usersList.FirstOrDefault(user => user.ID == ID);
             if (retrievedUser == default(User))

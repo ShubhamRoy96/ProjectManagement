@@ -1,15 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using ProjectManagement.Models;
+﻿using Domain.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence
 {
     public class SeedDataGenerator
     {
-        static ProjectManagementDbContext _dbContext;
+        private static ProjectManagementDbContext _dbContext;
 
         public static void GenerateSeedData(ProjectManagementDbContext dbContext)
         {

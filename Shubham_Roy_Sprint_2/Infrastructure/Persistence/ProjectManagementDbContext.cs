@@ -1,10 +1,6 @@
-﻿using Infrastructure.Common.Interfaces;
+﻿using Domain.Entities;
+using Infrastructure.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using ProjectManagement.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence
 {
@@ -12,12 +8,11 @@ namespace Infrastructure.Persistence
     {
         public ProjectManagementDbContext(DbContextOptions<ProjectManagementDbContext> options) : base(options)
         {
-            
         }
 
-        DbSet<User> _user;
-        DbSet<ProjectTask> _task;
-        DbSet<Project> _project;
+        private DbSet<User> _user;
+        private DbSet<ProjectTask> _task;
+        private DbSet<Project> _project;
 
         public DbSet<User> Users { get => _user; set => _user = value; }
         public DbSet<ProjectTask> ProjectTasks { get => _task; set => _task = value; }

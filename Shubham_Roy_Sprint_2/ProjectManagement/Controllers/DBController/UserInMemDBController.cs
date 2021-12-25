@@ -1,12 +1,10 @@
-﻿using Infrastructure.Persistence;
-using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Entities;
+using Infrastructure.Persistence;
 using Microsoft.Extensions.DependencyInjection;
 using ProjectManagement.Common.Interfaces;
-using ProjectManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,7 +12,7 @@ namespace ProjectManagement.Controllers.DBController
 {
     public class UserInMemDBController : IRepository<User>
     {
-        readonly ProjectManagementDbContext _dbContext;
+        private readonly ProjectManagementDbContext _dbContext;
 
         public UserInMemDBController(IServiceScopeFactory serviceScopeFactory)
         {
@@ -40,7 +38,6 @@ namespace ProjectManagement.Controllers.DBController
             }
             catch (Exception)
             {
-
                 throw;
             }
             return isSuccess;
@@ -67,7 +64,6 @@ namespace ProjectManagement.Controllers.DBController
                 _dbContext.SaveChanges();
             }
             return RetrieveByID(updatedUser.ID);
-
         }
     }
 }
