@@ -1,15 +1,16 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using ProjectManagement.Models;
+﻿using Domain.Entities;
+using Infrastructure.Persistence;
+using Microsoft.Extensions.DependencyInjection;
+using ProjectManagement.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace ProjectManagement.Controllers
+namespace ProjectManagement.Services.DBController
 {
     public class ProjectInMemDBController : IRepository<Project>
     {
-        readonly ProjectManagementDbContext _dbContext;
+        private readonly ProjectManagementDbContext _dbContext;
 
         public ProjectInMemDBController(IServiceScopeFactory serviceScopeFactory)
         {
@@ -59,9 +60,8 @@ namespace ProjectManagement.Controllers
                 Create(updatedProject);
                 _dbContext.SaveChanges();
             }
-            
-            return RetrieveByID(updatedProject.ID);
 
+            return RetrieveByID(updatedProject.ID);
         }
     }
 }

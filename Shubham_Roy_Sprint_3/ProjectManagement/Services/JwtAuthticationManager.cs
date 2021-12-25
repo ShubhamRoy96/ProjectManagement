@@ -1,5 +1,6 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using ProjectManagement.Models;
+﻿using Domain.Entities;
+using Microsoft.IdentityModel.Tokens;
+using ProjectManagement.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,7 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectManagement.Controllers
+namespace ProjectManagement.Services
 {
     public class JwtAuthticationManager : IJwtAuthenticationManager
     {
@@ -30,7 +31,7 @@ namespace ProjectManagement.Controllers
             if (!adminUsers.Any(user => user.FirstName == loginAdminUser.FirstName && user.Password == loginAdminUser.Password))
             {
                 return null;
-            }            
+            }
             var tokenKey = Encoding.ASCII.GetBytes(key);
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
@@ -40,7 +41,7 @@ namespace ProjectManagement.Controllers
                     new Claim(ClaimTypes.Name, loginAdminUser.FirstName)
                 }),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256)
-                
+
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

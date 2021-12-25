@@ -1,18 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ProjectManagement.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ProjectManagement.Common.Interfaces;
 
-namespace ProjectManagement.Controllers
+namespace ProjectManagement.Services
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        readonly IJwtAuthenticationManager jwtAuthenticationManager;
+        private readonly IJwtAuthenticationManager jwtAuthenticationManager;
+
         public AuthenticationController(IJwtAuthenticationManager jwtAuthenticationManager)
         {
             this.jwtAuthenticationManager = jwtAuthenticationManager;

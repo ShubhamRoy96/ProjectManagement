@@ -1,22 +1,19 @@
+using Domain.Entities;
+using Infrastructure;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ProjectManagement.Controllers;
-using ProjectManagement.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using ProjectManagement.Common.Interfaces;
+using ProjectManagement.Services.DBController;
+using ProjectManagement.Services.MockController;
+using ProjectManagement.Services;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectManagement
 {
@@ -32,7 +29,6 @@ namespace ProjectManagement
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -83,14 +79,10 @@ namespace ProjectManagement
                     };
                 });
             services.AddSingleton<IJwtAuthenticationManager>(new JwtAuthticationManager(key));
-            services.AddDbContext<ProjectManagementDbContext>(options =>
-            {
-                options.UseInMemoryDatabase("ProjectManagementDatabase");
-            }, contextLifetime: ServiceLifetime.Singleton);
+            services.AddDatabaseLayer();
             services.AddSingleton<IRepository<User>, UserMockController>();
             services.AddSingleton<IRepository<ProjectTask>, TaskMockController>();
             services.AddSingleton<IRepository<Project>, ProjectMockController>();
-           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

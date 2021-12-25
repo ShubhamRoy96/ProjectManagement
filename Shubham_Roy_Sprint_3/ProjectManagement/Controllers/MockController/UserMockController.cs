@@ -1,17 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Domain.Entities;
+using ProjectManagement.Common.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using ProjectManagement.Models;
-using Microsoft.AspNetCore.Authorization;
 
-namespace ProjectManagement.Controllers
+namespace ProjectManagement.Services.MockController
 {
     public class UserMockController : IRepository<User>
     {
-        List<User> usersList = new List<User>()
+        private List<User> usersList = new List<User>()
         {
             new User(){ ID = 1, FirstName = "Shubham", LastName = "Roy", Email = "shubhamroy896@gmail.com", Password = "NotMyActualGmailPassword@401"},
             new User(){ ID = 2, FirstName = "Amar", LastName = "Ojha", Email = "amar@gmail.com", Password = "NotAmarsActualGmailPassword@401"},
@@ -39,7 +35,7 @@ namespace ProjectManagement.Controllers
                 usersList.Remove(retrievedUser);
                 isSuccess = true;
             }
-            
+
             return isSuccess;
         }
 
@@ -50,12 +46,12 @@ namespace ProjectManagement.Controllers
 
         public User RetrieveByID(int ID)
         {
-            var retrievedUser = GetUser(ID);            
+            var retrievedUser = GetUser(ID);
             return retrievedUser;
         }
 
         public User Update(User updatedUserData)
-        {            
+        {
             var existingUser = GetUser(updatedUserData.ID);
             if (existingUser == null)
             {
@@ -66,7 +62,7 @@ namespace ProjectManagement.Controllers
             return GetUser(updatedUserData.ID);
         }
 
-        User GetUser(int ID)
+        private User GetUser(int ID)
         {
             var retrievedUser = usersList.FirstOrDefault(user => user.ID == ID);
             if (retrievedUser == default(User))

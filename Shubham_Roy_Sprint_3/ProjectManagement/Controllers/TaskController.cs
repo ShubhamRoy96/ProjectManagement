@@ -1,19 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ProjectManagement.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ProjectManagement.Common.Interfaces;
 
-namespace ProjectManagement.Controllers
+namespace ProjectManagement.Services
 {
     [Route("api/[controller]")]
     [ApiController]
     public class TaskController : ControllerBase
     {
-        readonly IRepository<ProjectTask> _repository;
+        private readonly IRepository<ProjectTask> _repository;
+
         public TaskController(IRepository<ProjectTask> repository)
         {
             _repository = repository;
@@ -51,7 +49,7 @@ namespace ProjectManagement.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult RetrieveByID(int ID)
         {
-            var retrievedTask = _repository.RetrieveByID(ID);            
+            var retrievedTask = _repository.RetrieveByID(ID);
             if (retrievedTask == null)
             {
                 return NotFound("ProjectTask not found.");

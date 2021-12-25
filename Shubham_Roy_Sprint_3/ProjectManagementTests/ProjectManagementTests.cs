@@ -3,7 +3,6 @@ using Xunit;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http;
 using System.Text.Json;
-using ProjectManagement.Models;
 using System.Text;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -13,6 +12,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Xunit.Sdk;
 using System.Linq;
+using Domain.Entities;
 
 namespace ProjectManagement
 {

@@ -1,19 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ProjectManagement.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ProjectManagement.Common.Interfaces;
 
-namespace ProjectManagement.Controllers
+namespace ProjectManagement.Services
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ProjectController : ControllerBase
     {
-        readonly IRepository<Project> _repository;
+        private readonly IRepository<Project> _repository;
+
         public ProjectController(IRepository<Project> repository)
         {
             _repository = repository;
@@ -91,7 +89,7 @@ namespace ProjectManagement.Controllers
             if (updatedData == null)
             {
                 return NotFound($"Project {updatedProjectData.ID} not found");
-            }            
+            }
             return Ok(updatedData);
         }
     }
