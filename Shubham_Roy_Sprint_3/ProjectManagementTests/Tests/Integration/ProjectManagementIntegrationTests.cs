@@ -15,15 +15,16 @@ using System.Linq;
 using Domain.Entities;
 using Xunit.Abstractions;
 using ProjectManagementTests.Functions;
+using ProjectManagementTests;
 
 namespace ProjectManagement.Tests.Integration
 {
-    public class IntegrationTests : IClassFixture<WebApplicationFactory<ProjectManagement.Startup>>
+    public class IntegrationTests : IClassFixture<ProjectManagementWebApplicationFactory<ProjectManagement.Startup>>
     {
-        readonly WebApplicationFactory<ProjectManagement.Startup> _appFactory;
+        readonly ProjectManagementWebApplicationFactory<ProjectManagement.Startup> _appFactory;
         readonly ITestOutputHelper _output;
 
-        public IntegrationTests(WebApplicationFactory<ProjectManagement.Startup> webApplicationFactory, ITestOutputHelper output)
+        public IntegrationTests(ProjectManagementWebApplicationFactory<ProjectManagement.Startup> webApplicationFactory, ITestOutputHelper output)
         {
             _appFactory = webApplicationFactory;
             _output = output;
@@ -209,7 +210,7 @@ namespace ProjectManagement.Tests.Integration
             };
             var serializedData = JsonSerializer.Serialize(testProject);
             var httpContent = new StringContent(serializedData, Encoding.UTF8, "application/json");
-            var createResponse = await client.PostAsync(createUrl, httpContent);
+            await client.PostAsync(createUrl, httpContent);
 
             
             var response = await client.DeleteAsync(url);
@@ -237,7 +238,7 @@ namespace ProjectManagement.Tests.Integration
             };
             var serializedData = JsonSerializer.Serialize(testTask);
             var httpContent = new StringContent(serializedData, Encoding.UTF8, "application/json");
-            var createResponse = await client.PostAsync(createUrl, httpContent);
+            await client.PostAsync(createUrl, httpContent);
 
             var response = await client.DeleteAsync(url);
             Assert.True(response.IsSuccessStatusCode);
@@ -264,7 +265,7 @@ namespace ProjectManagement.Tests.Integration
             };
             var serializedData = JsonSerializer.Serialize(testUser);
             var httpContent = new StringContent(serializedData, Encoding.UTF8, "application/json");
-            var createResponse = await client.PostAsync(createUrl, httpContent);
+            await client.PostAsync(createUrl, httpContent);
 
             var response = await client.DeleteAsync(url);
             Assert.True(response.IsSuccessStatusCode);

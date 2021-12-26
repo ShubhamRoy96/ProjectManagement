@@ -80,9 +80,9 @@ namespace ProjectManagement
                 });
             services.AddSingleton<IJwtAuthenticationManager>(new JwtAuthticationManager(key));
             services.AddDatabaseLayer();
-            services.AddSingleton<IRepository<User>, UserMockController>();
-            services.AddSingleton<IRepository<ProjectTask>, TaskMockController>();
-            services.AddSingleton<IRepository<Project>, ProjectMockController>();
+            services.AddSingleton<IRepository<User>, UserInMemDBController>();
+            services.AddSingleton<IRepository<ProjectTask>, TaskInMemDBController>();
+            services.AddSingleton<IRepository<Project>, ProjectInMemDBController>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,13 +103,15 @@ namespace ProjectManagement
 
             app.UseAuthorization();
 
+            if (env.IsDevelopment())
+            {
+                app.UseDataSeeder();
+            }
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
-            var context = app.ApplicationServices.GetRequiredService<ProjectManagementDbContext>();
-            SeedDataGenerator.GenerateSeedData(context);
         }
     }
 }
