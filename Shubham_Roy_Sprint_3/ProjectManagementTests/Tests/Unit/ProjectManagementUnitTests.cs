@@ -1,29 +1,25 @@
 ﻿using Domain.Entities;
+using Infrastructure.Persistence;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ProjectManagement.Controllers;
+using ProjectManagement.Controllers.DBController;
+using ProjectManagement.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
-using ProjectManagement.Controllers;
-using ProjectManagement.Services;
-using System.Net.Http;
-using Microsoft.AspNetCore.Mvc;
-using ProjectManagement.Controllers.DBController;
-using Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
 
 namespace ProjectManagementTests.Tests.Unit
 {
     public class ProjectManagementUnitTests : IDisposable
     {
-        readonly ProjectManagementDbContext _dbContext;
+        private readonly ProjectManagementDbContext _dbContext;
         private readonly ProjectController projectController;
         private readonly TaskController taskController;
         private readonly UserController userController;
 
-        static DbContextOptions<ProjectManagementDbContext> _dbContextOptions;
+        private static DbContextOptions<ProjectManagementDbContext> _dbContextOptions;
 
         public ProjectManagementUnitTests()
         {
@@ -106,15 +102,12 @@ namespace ProjectManagementTests.Tests.Unit
             httpContext.Request.Host = HostString.FromUriComponent("testhost");
             httpContext.Request.Path = PathString.FromUriComponent("/testpath");
 
-
             ProjectController customProjectController = new ProjectController(new ProjectInMemDBController(_dbContext))
             {
-
                 ControllerContext = new ControllerContext()
                 {
                     HttpContext = httpContext
                 }
-
             };
 
             var response = customProjectController.Create(project);
@@ -196,12 +189,10 @@ namespace ProjectManagementTests.Tests.Unit
 
             TaskController customTaskController = new TaskController(new TaskInMemDBController(_dbContext))
             {
-
                 ControllerContext = new ControllerContext()
                 {
                     HttpContext = httpContext
                 }
-
             };
 
             var response = customTaskController.Create(testProjectTask);
@@ -276,7 +267,6 @@ namespace ProjectManagementTests.Tests.Unit
                 LastName = lastName,
                 Email = email,
                 Password = password
-
             };
 
             var httpContext = new DefaultHttpContext();
@@ -286,12 +276,10 @@ namespace ProjectManagementTests.Tests.Unit
 
             UserController customUserController = new UserController(new UserInMemDBController(_dbContext))
             {
-
                 ControllerContext = new ControllerContext()
                 {
                     HttpContext = httpContext
                 }
-
             };
 
             var response = customUserController.Create(testUser);
@@ -334,7 +322,6 @@ namespace ProjectManagementTests.Tests.Unit
                 LastName = lastName,
                 Email = email,
                 Password = password
-
             };
 
             var response = userController.Update(testUser);
@@ -354,6 +341,5 @@ namespace ProjectManagementTests.Tests.Unit
             Assert.IsType<OkObjectResult>(response);
             Assert.IsType<NotFoundObjectResult>(userController.RetrieveByID(id));
         }
-
     }
 }

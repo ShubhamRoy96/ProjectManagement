@@ -1,28 +1,22 @@
-using System;
-using Xunit;
-using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net.Http;
-using System.Text.Json;
-using System.Text;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
-using System.Reflection;
-using Xunit.Sdk;
-using System.Linq;
 using Domain.Entities;
-using Xunit.Abstractions;
-using ProjectManagementTests.Functions;
+using Microsoft.AspNetCore.Http;
 using ProjectManagementTests;
+using ProjectManagementTests.Functions;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace ProjectManagement.Tests.Integration
 {
     public class IntegrationTests : IClassFixture<ProjectManagementWebApplicationFactory<ProjectManagement.Startup>>
     {
-        readonly ProjectManagementWebApplicationFactory<ProjectManagement.Startup> _appFactory;
-        readonly ITestOutputHelper _output;
+        private readonly ProjectManagementWebApplicationFactory<ProjectManagement.Startup> _appFactory;
+        private readonly ITestOutputHelper _output;
 
         public IntegrationTests(ProjectManagementWebApplicationFactory<ProjectManagement.Startup> webApplicationFactory, ITestOutputHelper output)
         {
@@ -52,7 +46,6 @@ namespace ProjectManagement.Tests.Integration
             Assert.Equal(testProject.Name, responseData.Name);
 
             TestFunctions.Cleanup(_appFactory, "Project", id);
-
         }
 
         [Trait("Integration", "Creation")]
@@ -97,7 +90,6 @@ namespace ProjectManagement.Tests.Integration
                 LastName = lastName,
                 Email = email,
                 Password = password
-
             };
             var serializedData = JsonSerializer.Serialize(testUser);
             var authBearerToken = await TestFunctions.GetAuthBearerToken(_appFactory);
@@ -201,7 +193,7 @@ namespace ProjectManagement.Tests.Integration
             var authBearerToken = await TestFunctions.GetAuthBearerToken(_appFactory);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authBearerToken);
 
-            var createUrl = "/api/Project";            
+            var createUrl = "/api/Project";
             var testProject = new Project()
             {
                 ID = id,
@@ -212,7 +204,6 @@ namespace ProjectManagement.Tests.Integration
             var httpContent = new StringContent(serializedData, Encoding.UTF8, "application/json");
             await client.PostAsync(createUrl, httpContent);
 
-            
             var response = await client.DeleteAsync(url);
             Assert.True(response.IsSuccessStatusCode);
         }
@@ -261,7 +252,7 @@ namespace ProjectManagement.Tests.Integration
                 FirstName = "test1",
                 LastName = "test1",
                 Email = "test1@gmail.com",
-                Password = "test123"                
+                Password = "test123"
             };
             var serializedData = JsonSerializer.Serialize(testUser);
             var httpContent = new StringContent(serializedData, Encoding.UTF8, "application/json");
@@ -335,7 +326,6 @@ namespace ProjectManagement.Tests.Integration
             var authBearerToken = await TestFunctions.GetAuthBearerToken(_appFactory);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authBearerToken);
 
-
             var testUser = new User()
             {
                 ID = id,
@@ -343,7 +333,6 @@ namespace ProjectManagement.Tests.Integration
                 LastName = lastName,
                 Email = email,
                 Password = password
-
             };
 
             var serializedData = JsonSerializer.Serialize(testUser);

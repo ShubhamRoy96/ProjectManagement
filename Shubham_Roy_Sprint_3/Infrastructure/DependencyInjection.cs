@@ -15,7 +15,7 @@ namespace Infrastructure
             }, contextLifetime: ServiceLifetime.Singleton
             );
 
-            services.AddScoped<IProjectManagementDbContext>(serviceProvider => serviceProvider.GetService<ProjectManagementDbContext>());
+            services.AddSingleton<IProjectManagementDbContext>(serviceProvider => serviceProvider.GetService<ProjectManagementDbContext>());
 
             return services;
         }

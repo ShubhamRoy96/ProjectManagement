@@ -24,7 +24,7 @@ namespace Domain.Entities
             if (other == null)
                 return false;
 
-            return this.ID.Equals(other.ID) 
+            return this.ID.Equals(other.ID)
                 &&
                 (
                     object.ReferenceEquals(this.Name, other.Name) ||

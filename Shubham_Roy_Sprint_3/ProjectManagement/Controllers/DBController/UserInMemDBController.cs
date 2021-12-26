@@ -1,7 +1,5 @@
 ﻿using Domain.Entities;
 using Infrastructure.Common.Interfaces;
-using Infrastructure.Persistence;
-using Microsoft.Extensions.DependencyInjection;
 using ProjectManagement.Common.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,11 +12,6 @@ namespace ProjectManagement.Controllers.DBController
     public class UserInMemDBController : IRepository<User>
     {
         private readonly IProjectManagementDbContext _dbContext;
-
-        public UserInMemDBController(IServiceScopeFactory serviceScopeFactory)
-        {
-            _dbContext = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<ProjectManagementDbContext>();
-        }
 
         public UserInMemDBController(IProjectManagementDbContext dbContext)
         {

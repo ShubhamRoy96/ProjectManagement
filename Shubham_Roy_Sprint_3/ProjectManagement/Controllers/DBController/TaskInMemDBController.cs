@@ -1,7 +1,5 @@
 ﻿using Domain.Entities;
 using Infrastructure.Common.Interfaces;
-using Infrastructure.Persistence;
-using Microsoft.Extensions.DependencyInjection;
 using ProjectManagement.Common.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,11 +10,6 @@ namespace ProjectManagement.Controllers.DBController
     public class TaskInMemDBController : IRepository<ProjectTask>
     {
         private readonly IProjectManagementDbContext _dbContext;
-
-        public TaskInMemDBController(IServiceScopeFactory serviceProvider)
-        {
-            _dbContext = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<ProjectManagementDbContext>();
-        }
 
         public TaskInMemDBController(IProjectManagementDbContext dbContext)
         {

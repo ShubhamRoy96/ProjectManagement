@@ -17,8 +17,11 @@ namespace Infrastructure.Persistence
 
         public async Task Invoke(HttpContext context)
         {
-            var dbContext = (ProjectManagementDbContext)context.RequestServices.GetService(typeof(ProjectManagementDbContext));
-            await GenerateSeedData(dbContext);
+            if (_dbContext == null)
+            {
+                var dbContext = (ProjectManagementDbContext)context.RequestServices.GetService(typeof(ProjectManagementDbContext));
+                await GenerateSeedData(dbContext);
+            }
             await _next(context);
         }
 

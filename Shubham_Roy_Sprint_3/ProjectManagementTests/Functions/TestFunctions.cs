@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -11,9 +10,10 @@ using System.Threading.Tasks;
 
 namespace ProjectManagementTests.Functions
 {
-    class TestFunctions
+    internal class TestFunctions
     {
         public static string BearerToken { get; set; }
+
         internal static bool CompareCollections<T>(List<T> actualDataCollection, List<T> mockDataCollection)
         {
             var count = 0;

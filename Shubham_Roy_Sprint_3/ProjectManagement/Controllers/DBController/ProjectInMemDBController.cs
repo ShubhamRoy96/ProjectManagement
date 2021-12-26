@@ -1,22 +1,15 @@
 ﻿using Domain.Entities;
-using Infrastructure.Persistence;
-using Microsoft.Extensions.DependencyInjection;
+using Infrastructure.Common.Interfaces;
 using ProjectManagement.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Infrastructure.Common.Interfaces;
 
 namespace ProjectManagement.Controllers.DBController
 {
     public class ProjectInMemDBController : IRepository<Project>
     {
         private readonly IProjectManagementDbContext _dbContext;
-
-        public ProjectInMemDBController(IServiceScopeFactory serviceScopeFactory)
-        {
-            _dbContext = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<ProjectManagementDbContext>();
-        }
 
         public ProjectInMemDBController(IProjectManagementDbContext dbContext)
         {
