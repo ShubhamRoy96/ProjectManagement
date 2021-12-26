@@ -12,15 +12,17 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectManagement.Controllers.DBController;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace ProjectManagementTests.Tests.Unit
 {
     public class ProjectManagementUnitTests : IDisposable
     {
         readonly ProjectManagementDbContext _dbContext;
-        private readonly ProjectInMemDBController projectController;
-        private readonly TaskInMemDBController taskController;
-        private readonly UserInMemDBController userCOntroller;
+        private readonly ProjectController projectController;
+        private readonly TaskController taskController;
+        private readonly UserController userController;
+
         static DbContextOptions<ProjectManagementDbContext> _dbContextOptions;
 
         public ProjectManagementUnitTests()
@@ -32,9 +34,9 @@ namespace ProjectManagementTests.Tests.Unit
 
             SeedDataGenerator.GenerateSeedData(_dbContext);
 
-            projectController =  new ProjectInMemDBController(_dbContext);
-            taskController = new TaskInMemDBController(_dbContext);
-            userCOntroller = new UserInMemDBController(_dbContext);
+            projectController = new ProjectController(new ProjectInMemDBController(_dbContext));
+            taskController = new TaskController(new TaskInMemDBController(_dbContext));
+            userController = new UserController(new UserInMemDBController(_dbContext));
         }
 
         public void Dispose()
@@ -51,7 +53,7 @@ namespace ProjectManagementTests.Tests.Unit
         }
 
         [Theory]
-        [InlineData("SuperAdmin1","SuperPwd1")]
+        [InlineData("SuperAdmin1", "SuperPwd1")]
         [InlineData("SuperAdmin2", "SuperPwd2")]
         public void CheckLogin_shouldBeAbleToLogIn(string username, string password)
         {
@@ -87,6 +89,7 @@ namespace ProjectManagementTests.Tests.Unit
             Assert.IsType<UnauthorizedObjectResult>(response);
         }
 
+        [Trait("Unit", "Creation")]
         [Theory]
         [InlineData(30, "Test project A", "Test project A for testing")]
         public void CreateProject_shouldReturnOk(int id, string name, string detail)
@@ -98,34 +101,57 @@ namespace ProjectManagementTests.Tests.Unit
                 Detail = detail
             };
 
-            
-            var responseEntity = projectController.Create(project);
-            
-            Assert.Equal(project, responseEntity);
+            var httpContext = new DefaultHttpContext();
+            httpContext.Request.Scheme = "http";
+            httpContext.Request.Host = HostString.FromUriComponent("testhost");
+            httpContext.Request.Path = PathString.FromUriComponent("/testpath");
+
+
+            ProjectController customProjectController = new ProjectController(new ProjectInMemDBController(_dbContext))
+            {
+
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext
+                }
+
+            };
+
+            var response = customProjectController.Create(project);
+
+            Assert.IsType<CreatedResult>(response);
+            var createdProject = ((CreatedResult)response).Value;
+            Assert.Equal(project, createdProject);
         }
 
-        [Trait("Integration", "Retrieval")]
+        [Trait("Unit", "Retrieval")]
         [Theory]
         [InlineData(2)]
         public void GetProjectByID_shouldReturnProjectWithGivenID(int id)
         {
             var response = projectController.RetrieveByID(id);
-            Assert.Equal(id, response.ID);
+
+            Assert.IsType<OkObjectResult>(response);
+            var retrievedProject = (Project)(((OkObjectResult)response).Value);
+            Assert.Equal(id, retrievedProject.ID);
         }
 
-        [Trait("Integration", "Retrieval")]
+        [Trait("Unit", "Retrieval")]
         [Fact]
         public void GetAllProjects_shouldReturnAllProjects()
         {
             var response = projectController.RetrieveAll();
-            Assert.Equal(4, response.Count);
+
+            Assert.IsType<OkObjectResult>(response);
+            var dataCount = ((List<Project>)(((OkObjectResult)response).Value)).Count;
+            Assert.Equal(4, dataCount);
         }
 
-        [Trait("Integration", "Updation")]
+        [Trait("Unit", "Updation")]
         [Theory]
         [InlineData(3, "test 1", "detail 1")]
         public void UpdateProject_shouldUpdateProjectWithGivenID(int id, string name, string detail)
-        {            
+        {
             var project = new Project()
             {
                 ID = id,
@@ -134,16 +160,200 @@ namespace ProjectManagementTests.Tests.Unit
             };
 
             var response = projectController.Update(project);
-            Assert.Equal(project, response);
+            Assert.IsType<OkObjectResult>(response);
+            var updatedProject = (Project)((OkObjectResult)response).Value;
+            Assert.Equal(project, updatedProject);
         }
 
-        [Trait("Integration", "Deletion")]
+        [Trait("Unit", "Deletion")]
         [Theory]
         [InlineData(1)]
         public void DeleteProject_shouldReturnOK(int id)
         {
             var response = projectController.Delete(id);
-            Assert.True(response);
+            Assert.IsType<OkObjectResult>(response);
+            Assert.IsType<NotFoundObjectResult>(projectController.RetrieveByID(id));
         }
+
+        [Trait("Unit", "Creation")]
+        [Theory]
+        [InlineData(10, 20, 30, 1)]
+        public void CreateTask_shouldReturnOK(int id, int projectID, int assignedUserId, int status)
+        {
+            var testProjectTask = new ProjectTask()
+            {
+                ID = id,
+                ProjectID = projectID,
+                Detail = $"Test Task {id}",
+                AssignedToUserID = assignedUserId,
+                Status = status
+            };
+
+            var httpContext = new DefaultHttpContext();
+            httpContext.Request.Scheme = "http";
+            httpContext.Request.Host = HostString.FromUriComponent("testhost");
+            httpContext.Request.Path = PathString.FromUriComponent("/testpath");
+
+            TaskController customTaskController = new TaskController(new TaskInMemDBController(_dbContext))
+            {
+
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext
+                }
+
+            };
+
+            var response = customTaskController.Create(testProjectTask);
+
+            Assert.IsType<CreatedResult>(response);
+            var createdTask = ((CreatedResult)response).Value;
+            Assert.Equal(testProjectTask, createdTask);
+        }
+
+        [Trait("Unit", "Retrieval")]
+        [Fact]
+        public void GetAllTasks_shouldReturnAllTasks()
+        {
+            var response = taskController.RetrieveAll();
+
+            Assert.IsType<OkObjectResult>(response);
+            var dataCount = ((List<ProjectTask>)(((OkObjectResult)response).Value)).Count;
+            Assert.Equal(4, dataCount);
+        }
+
+        [Trait("Unit", "Retrieval")]
+        [Theory]
+        [InlineData(2)]
+        public void GetTaskByID_shouldReturnTaskWithGivenID(int id)
+        {
+            var response = taskController.RetrieveByID(id);
+
+            Assert.IsType<OkObjectResult>(response);
+        }
+
+        [Trait("Unit", "Updation")]
+        [Theory]
+        [InlineData(3, 10, 20, 2)]
+        public void UpdateProjectTask_shouldUpdateTaskWithGivenID(int id, int projectID, int assignedUserId, int status)
+        {
+            var testProjectTask = new ProjectTask()
+            {
+                ID = id,
+                ProjectID = projectID,
+                Detail = $"Test Task {id}",
+                AssignedToUserID = assignedUserId,
+                Status = status
+            };
+
+            var response = taskController.Update(testProjectTask);
+
+            Assert.IsType<OkObjectResult>(response);
+            var updatedProjectTask = (ProjectTask)((OkObjectResult)response).Value;
+            Assert.Equal(testProjectTask, updatedProjectTask);
+        }
+
+        [Trait("Unit", "Deletion")]
+        [Theory]
+        [InlineData(4)]
+        public void DeleteTask_shouldReturnOK(int id)
+        {
+            var response = taskController.Delete(id);
+
+            Assert.IsType<OkObjectResult>(response);
+            Assert.IsType<NotFoundObjectResult>(taskController.RetrieveByID(id));
+        }
+
+        [Trait("Unit", "Creation")]
+        [Theory]
+        [InlineData(10, "test A", "surname A", "emailA@gmail.com", "pwdA")]
+        public void CreateUser_shouldRetrunOK(int id, string firstName, string lastName, string email, string password)
+        {
+            var testUser = new User()
+            {
+                ID = id,
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                Password = password
+
+            };
+
+            var httpContext = new DefaultHttpContext();
+            httpContext.Request.Scheme = "http";
+            httpContext.Request.Host = HostString.FromUriComponent("testhost");
+            httpContext.Request.Path = PathString.FromUriComponent("/testpath");
+
+            UserController customUserController = new UserController(new UserInMemDBController(_dbContext))
+            {
+
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext
+                }
+
+            };
+
+            var response = customUserController.Create(testUser);
+
+            Assert.IsType<CreatedResult>(response);
+            var createdUser = ((CreatedResult)response).Value;
+            Assert.Equal(testUser, createdUser);
+        }
+
+        [Trait("Unit", "Retrieval")]
+        [Fact]
+        public void GetAllUsers_shouldReturnAllUsers()
+        {
+            var response = userController.RetrieveAll();
+
+            Assert.IsType<OkObjectResult>(response);
+            var dataCount = ((List<User>)(((OkObjectResult)response).Value)).Count;
+            Assert.Equal(4, dataCount);
+        }
+
+        [Trait("Unit", "Retrieval")]
+        [Theory]
+        [InlineData(2)]
+        public void GetUserByID_shouldReturnUserWithGivenID(int id)
+        {
+            var response = userController.RetrieveByID(id);
+
+            Assert.IsType<OkObjectResult>(response);
+        }
+
+        [Trait("Unit", "Updation")]
+        [Theory]
+        [InlineData(3, "test A", "surname A", "emailA@gmail.com", "pwdA")]
+        public void UpdateUser_shouldUpdateUserWithGivenID(int id, string firstName, string lastName, string email, string password)
+        {
+            var testUser = new User()
+            {
+                ID = id,
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                Password = password
+
+            };
+
+            var response = userController.Update(testUser);
+
+            Assert.IsType<OkObjectResult>(response);
+            var updatedUser = (User)((OkObjectResult)response).Value;
+            Assert.Equal(testUser, updatedUser);
+        }
+
+        [Trait("Unit", "Deletion")]
+        [Theory]
+        [InlineData(1)]
+        public void DeleteUser_shouldReturnOK(int id)
+        {
+            var response = userController.Delete(id);
+
+            Assert.IsType<OkObjectResult>(response);
+            Assert.IsType<NotFoundObjectResult>(userController.RetrieveByID(id));
+        }
+
     }
 }
