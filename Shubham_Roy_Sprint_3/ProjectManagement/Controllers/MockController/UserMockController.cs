@@ -3,7 +3,7 @@ using ProjectManagement.Common.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ProjectManagement.Services.MockController
+namespace ProjectManagement.Controllers.MockController
 {
     public class UserMockController : IRepository<User>
     {

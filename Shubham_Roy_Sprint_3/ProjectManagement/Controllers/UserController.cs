@@ -6,7 +6,7 @@ using ProjectManagement.Common.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace ProjectManagement.Services
+namespace ProjectManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

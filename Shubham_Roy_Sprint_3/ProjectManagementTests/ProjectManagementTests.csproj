@@ -24,8 +24,4 @@
     <ProjectReference Include="..\ProjectManagement\ProjectManagement.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Tests\Unit\" />
-  </ItemGroup>
-
 </Project>

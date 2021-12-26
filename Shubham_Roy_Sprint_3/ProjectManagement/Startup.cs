@@ -10,10 +10,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProjectManagement.Common.Interfaces;
-using ProjectManagement.Services.DBController;
-using ProjectManagement.Services.MockController;
+using ProjectManagement.Controllers.MockController;
 using ProjectManagement.Services;
 using System.Text;
+using ProjectManagement.Controllers.DBController;
 
 namespace ProjectManagement
 {

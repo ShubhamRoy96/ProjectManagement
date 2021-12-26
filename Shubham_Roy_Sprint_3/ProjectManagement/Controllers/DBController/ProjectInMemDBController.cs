@@ -5,16 +5,22 @@ using ProjectManagement.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Infrastructure.Common.Interfaces;
 
-namespace ProjectManagement.Services.DBController
+namespace ProjectManagement.Controllers.DBController
 {
     public class ProjectInMemDBController : IRepository<Project>
     {
-        private readonly ProjectManagementDbContext _dbContext;
+        private readonly IProjectManagementDbContext _dbContext;
 
         public ProjectInMemDBController(IServiceScopeFactory serviceScopeFactory)
         {
             _dbContext = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<ProjectManagementDbContext>();
+        }
+
+        public ProjectInMemDBController(IProjectManagementDbContext dbContext)
+        {
+            _dbContext = dbContext;
         }
 
         public Project Create(Project Project)

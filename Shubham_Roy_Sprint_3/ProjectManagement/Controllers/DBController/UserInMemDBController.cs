@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Infrastructure.Common.Interfaces;
 using Infrastructure.Persistence;
 using Microsoft.Extensions.DependencyInjection;
 using ProjectManagement.Common.Interfaces;
@@ -8,15 +9,20 @@ using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace ProjectManagement.Services.DBController
+namespace ProjectManagement.Controllers.DBController
 {
     public class UserInMemDBController : IRepository<User>
     {
-        private readonly ProjectManagementDbContext _dbContext;
+        private readonly IProjectManagementDbContext _dbContext;
 
         public UserInMemDBController(IServiceScopeFactory serviceScopeFactory)
         {
             _dbContext = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<ProjectManagementDbContext>();
+        }
+
+        public UserInMemDBController(IProjectManagementDbContext dbContext)
+        {
+            _dbContext = dbContext;
         }
 
         public User Create(User user)

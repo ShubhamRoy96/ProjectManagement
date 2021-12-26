@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManagement.Common.Interfaces;
 
-namespace ProjectManagement.Services
+namespace ProjectManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
