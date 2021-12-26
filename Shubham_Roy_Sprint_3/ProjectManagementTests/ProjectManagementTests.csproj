@@ -25,10 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tests\Integration\Unit - Copy %282%29\" />
-    <Folder Include="Tests\Integration\Unit - Copy %283%29\" />
-    <Folder Include="Tests\Integration\Update\" />
-    <Folder Include="Tests\Integration\Create\" />
     <Folder Include="Tests\Unit\" />
   </ItemGroup>
 

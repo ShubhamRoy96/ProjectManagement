@@ -16,7 +16,7 @@ using Domain.Entities;
 using Xunit.Abstractions;
 using ProjectManagementTests.Functions;
 
-namespace ProjectManagement
+namespace ProjectManagement.Tests.Integration
 {
     public class IntegrationTests : IClassFixture<WebApplicationFactory<ProjectManagement.Startup>>
     {
@@ -29,11 +29,94 @@ namespace ProjectManagement
             _output = output;
         }
 
+        [Trait("Integration", "Creation")]
+        [Theory]
+        [InlineData(10, "Test project A", "Test project A for testing")]
+        public async void CreateProject_shouldReturnOk(int id, string name, string detail)
+        {
+            var url = "/api/Project";
+            var client = _appFactory.CreateClient();
+            var testProject = new Project()
+            {
+                ID = id,
+                Name = name,
+                Detail = detail
+            };
+            var serializedData = JsonSerializer.Serialize(testProject);
+            var httpContent = new StringContent(serializedData, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(url, httpContent);
+            response.EnsureSuccessStatusCode();
+
+            var responseData = (Project)response.Content.ReadFromJsonAsync(typeof(Project)).Result;
+            Assert.Equal(testProject.Name, responseData.Name);
+
+            TestFunctions.Cleanup(_appFactory, "Project", id);
+
+        }
+
+        [Trait("Integration", "Creation")]
+        [Theory]
+        [InlineData(10, 20, 30, 1)]
+        public async void CreateTask_shouldReturnOK(int id, int projectID, int assignedUserId, int status)
+        {
+            var url = "/api/Task";
+            var client = _appFactory.CreateClient();
+
+            var testProjectTask = new ProjectTask()
+            {
+                ID = id,
+                ProjectID = projectID,
+                Detail = $"Test Task {id}",
+                AssignedToUserID = assignedUserId,
+                Status = status
+            };
+            var serializedData = JsonSerializer.Serialize(testProjectTask);
+            var httpContent = new StringContent(serializedData, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(url, httpContent);
+            response.EnsureSuccessStatusCode();
+
+            var responseData = (ProjectTask)response.Content.ReadFromJsonAsync(typeof(ProjectTask)).Result;
+            Assert.Equal(testProjectTask.Detail, responseData.Detail);
+
+            TestFunctions.Cleanup(_appFactory, "Task", id);
+        }
+
+        [Trait("Integration", "Creation")]
+        [Theory]
+        [InlineData(10, "test A", "surname A", "emailA@gmail.com", "pwdA")]
+        public async void CreateUser_shouldRetrunOK(int id, string firstName, string lastName, string email, string password)
+        {
+            var url = "/api/User";
+            var client = _appFactory.CreateClient();
+
+            var testUser = new User()
+            {
+                ID = id,
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                Password = password
+
+            };
+            var serializedData = JsonSerializer.Serialize(testUser);
+            var authBearerToken = await TestFunctions.GetAuthBearerToken(_appFactory);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authBearerToken);
+            var httpContent = new StringContent(serializedData, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(url, httpContent);
+            response.EnsureSuccessStatusCode();
+
+            var responseData = (User)response.Content.ReadFromJsonAsync(typeof(User)).Result;
+            Assert.Equal(testUser.FirstName, responseData.FirstName);
+
+            TestFunctions.Cleanup(_appFactory, "User", id);
+        }
+
+        [Trait("Integration", "Retrieval")]
         [Theory]
         [InlineData("api/Project")]
         [InlineData("api/Task")]
         [InlineData("api/User")]
-        public async void CheckAll_GET_Endpoints(string url)
+        public async void CheckAll_GET_Endpoints_allGETEndPointsShouldBeReachable(string url)
         {
             var client = _appFactory.CreateClient();
             var response = await client.GetAsync(url);
@@ -42,7 +125,7 @@ namespace ProjectManagement
         }
 
         [Fact]
-        public async void CheckLoginAuthentication()
+        public async void CheckLoginAuthentication_shouldBeableToLogIn()
         {
             var url = "api/Authentication/Login";
             var client = _appFactory.CreateClient();
@@ -62,12 +145,10 @@ namespace ProjectManagement
             Assert.True(response.IsSuccessStatusCode, $"Request failed with response reason : {response.ReasonPhrase}");
         }
 
-
-        
-
+        [Trait("Integration", "Retrieval")]
         [Theory]
         [InlineData(2)]
-        public async void GetProjectByID(int id)
+        public async void GetProjectByID_shouldReturnProjectWithGivenID(int id)
         {
             var url = $"/api/Project/{id}";
             var client = _appFactory.CreateClient();
@@ -79,9 +160,10 @@ namespace ProjectManagement
             Assert.Equal(id, responseData.ID);
         }
 
+        [Trait("Integration", "Retrieval")]
         [Theory]
         [InlineData(2)]
-        public async void GetTaskByID(int id)
+        public async void GetTaskByID_shouldReturnTaskWithGivenID(int id)
         {
             var url = $"/api/Task/{id}";
             var client = _appFactory.CreateClient();
@@ -93,9 +175,10 @@ namespace ProjectManagement
             Assert.Equal(id, responseData.ID);
         }
 
+        [Trait("Integration", "Retrieval")]
         [Theory]
         [InlineData(2)]
-        public async void GetUserByID(int id)
+        public async void GetUserByID_shouldReturnUserWithGivenID(int id)
         {
             var url = $"/api/User/{id}";
             var client = _appFactory.CreateClient();
@@ -109,49 +192,88 @@ namespace ProjectManagement
 
         [Trait("Integration", "Deletion")]
         [Theory]
-        [InlineData(1)]
-        public async void DeleteProject(int id)
+        [InlineData(30)]
+        public async void DeleteProject_shouldReturnOK(int id)
         {
             var url = $"/api/Project?ID={id}";
             var client = _appFactory.CreateClient();
             var authBearerToken = await TestFunctions.GetAuthBearerToken(_appFactory);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authBearerToken);
 
+            var createUrl = "/api/Project";            
+            var testProject = new Project()
+            {
+                ID = id,
+                Name = "test1",
+                Detail = "detail1"
+            };
+            var serializedData = JsonSerializer.Serialize(testProject);
+            var httpContent = new StringContent(serializedData, Encoding.UTF8, "application/json");
+            var createResponse = await client.PostAsync(createUrl, httpContent);
+
+            
             var response = await client.DeleteAsync(url);
             Assert.True(response.IsSuccessStatusCode);
         }
 
         [Trait("Integration", "Deletion")]
         [Theory]
-        [InlineData(1)]
-        public async void DeleteTask(int id)
+        [InlineData(30)]
+        public async void DeleteTask_shouldReturnOK(int id)
         {
             var url = $"/api/Task?ID={id}";
             var client = _appFactory.CreateClient();
             var authBearerToken = await TestFunctions.GetAuthBearerToken(_appFactory);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authBearerToken);
 
+            var createUrl = "/api/Task";
+            var testTask = new ProjectTask()
+            {
+                ID = id,
+                Detail = "detail1",
+                ProjectID = id,
+                AssignedToUserID = id,
+                Status = 1
+            };
+            var serializedData = JsonSerializer.Serialize(testTask);
+            var httpContent = new StringContent(serializedData, Encoding.UTF8, "application/json");
+            var createResponse = await client.PostAsync(createUrl, httpContent);
+
             var response = await client.DeleteAsync(url);
             Assert.True(response.IsSuccessStatusCode);
         }
 
         [Trait("Integration", "Deletion")]
         [Theory]
-        [InlineData(1)]
-        public async void DeleteUser(int id)
+        [InlineData(30)]
+        public async void DeleteUser_shouldReturnOK(int id)
         {
             var url = $"/api/User?ID={id}";
             var client = _appFactory.CreateClient();
             var authBearerToken = await TestFunctions.GetAuthBearerToken(_appFactory);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authBearerToken);
 
+            var createUrl = "/api/User";
+            var testUser = new User()
+            {
+                ID = id,
+                FirstName = "test1",
+                LastName = "test1",
+                Email = "test1@gmail.com",
+                Password = "test123"                
+            };
+            var serializedData = JsonSerializer.Serialize(testUser);
+            var httpContent = new StringContent(serializedData, Encoding.UTF8, "application/json");
+            var createResponse = await client.PostAsync(createUrl, httpContent);
+
             var response = await client.DeleteAsync(url);
             Assert.True(response.IsSuccessStatusCode);
         }
 
+        [Trait("Integration", "Updation")]
         [Theory]
         [InlineData(3, "test 1", "detail 1")]
-        public async void UpdateProject(int id, string name, string detail)
+        public async void UpdateProject_shouldUpdateProjectWithGivenID(int id, string name, string detail)
         {
             var url = "/api/Project";
             var client = _appFactory.CreateClient();
@@ -174,9 +296,10 @@ namespace ProjectManagement
             Assert.Equal(testProject.Name, responseData.Name);
         }
 
+        [Trait("Integration", "Updation")]
         [Theory]
         [InlineData(3, 10, 20, 2)]
-        public async void UpdateProjectTask(int id, int projectID, int assignedUserId, int status)
+        public async void UpdateProjectTask_shouldUpdateTaskWithGivenID(int id, int projectID, int assignedUserId, int status)
         {
             var url = "/api/Task";
             var client = _appFactory.CreateClient();
@@ -201,9 +324,10 @@ namespace ProjectManagement
             Assert.Equal(testProjectTask.Detail, responseData.Detail);
         }
 
+        [Trait("Integration", "Updation")]
         [Theory]
         [InlineData(3, "test A", "surname A", "emailA@gmail.com", "pwdA")]
-        public async void UpdateUser(int id, string firstName, string lastName, string email, string password)
+        public async void UpdateUser_shouldUpdateUserWithGivenID(int id, string firstName, string lastName, string email, string password)
         {
             var url = "/api/User";
             var client = _appFactory.CreateClient();
@@ -230,8 +354,9 @@ namespace ProjectManagement
             Assert.Equal(testUser.FirstName, responseData.FirstName);
         }
 
+        [Trait("Integration", "Retrieval")]
         [Fact]
-        public async void GetAllUsers()
+        public async void GetAllUsers_shouldReturnAllUsers()
         {
             var url = "/api/User";
             var client = _appFactory.CreateClient();
@@ -241,13 +366,14 @@ namespace ProjectManagement
             var responseData = await response.Content.ReadFromJsonAsync(typeof(List<User>));
             List<User> allUsers = (List<User>)responseData;
 
-            var mockTestUsers = GetAllTestUsers();
-            bool isCollectionEqual = TestFunctions.CompareCollections(allUsers, mockTestUsers);
-            Assert.True(isCollectionEqual);
+            var mockTestUsers = TestFunctions.GetAllTestUsers();
+
+            Assert.Equal(mockTestUsers.Count, allUsers.Count);
         }
 
+        [Trait("Integration", "Retrieval")]
         [Fact]
-        public async void GetAllProjects()
+        public async void GetAllProjects_shouldReturnAllProjects()
         {
             var url = "/api/Project";
             var client = _appFactory.CreateClient();
@@ -257,15 +383,14 @@ namespace ProjectManagement
             var responseData = await response.Content.ReadFromJsonAsync(typeof(List<Project>));
             List<Project> allProjects = (List<Project>)responseData;
 
-            var mockTestProjects = GetAllTestProjects();
-            bool isCollectionEqual = TestFunctions.CompareCollections(allProjects, mockTestProjects);
-            Assert.True(isCollectionEqual);
+            var mockTestProjects = TestFunctions.GetAllTestProjects();
+
+            Assert.Equal(mockTestProjects.Count, allProjects.Count);
         }
 
-        
-
+        [Trait("Integration", "Retrieval")]
         [Fact]
-        public async void GetAllTasks()
+        public async void GetAllTasks_shouldReturnAllTasks()
         {
             var url = "/api/Task";
             var client = _appFactory.CreateClient();
@@ -275,43 +400,8 @@ namespace ProjectManagement
             var responseData = await response.Content.ReadFromJsonAsync(typeof(List<ProjectTask>));
             List<ProjectTask> allProjectTasks = (List<ProjectTask>)responseData;
 
-            var mockTestProjectsTasks = GetAllTestProjectTasks();
-            bool isCollectionEqual = TestFunctions.CompareCollections(allProjectTasks, mockTestProjectsTasks);
-            Assert.True(isCollectionEqual);
+            var mockTestProjectsTasks = TestFunctions.GetAllTestProjectTasks();
+            Assert.Equal(mockTestProjectsTasks.Count, allProjectTasks.Count);
         }
-
-        private List<ProjectTask> GetAllTestProjectTasks()
-        {
-            return new List<ProjectTask>()
-        {
-            new ProjectTask(){ ID = 1, ProjectID = 1, Status = 1, AssignedToUserID = 1, Detail = "A task", CreatedOn = new DateTime(2021,12,1)},
-            new ProjectTask(){ ID = 2, ProjectID = 2, Status = 2, AssignedToUserID = 2, Detail = "A good task", CreatedOn = new DateTime(2021,2,12)},
-            new ProjectTask(){ ID = 3, ProjectID = 3, Status = 3, AssignedToUserID = 4, Detail = "A boring task", CreatedOn = new DateTime(2021,3,14)},
-            new ProjectTask(){ ID = 4, ProjectID = 4, Status = 4, AssignedToUserID = 3, Detail = "An Awesome task!", CreatedOn = new DateTime(2021,5,21)},
-        };
-        }
-
-        List<User> GetAllTestUsers()
-        {
-            return new List<User>() 
-            { 
-                new User(){ ID = 1, FirstName = "Shubham", LastName = "Roy", Email = "shubhamroy896@gmail.com", Password = "NotMyActualGmailPassword@401"},
-                new User(){ ID = 2, FirstName = "Amar", LastName = "Ojha", Email = "amar@gmail.com", Password = "NotAmarsActualGmailPassword@401"},
-                new User(){ ID = 3, FirstName = "Akbar", LastName = "Shahpuri", Email = "akbar@gmail.com", Password = "NotAkabarsActualGmailPassword@401"},
-                new User(){ ID = 4, FirstName = "Anthony", LastName = "Allen", Email = "anthony@gmail.com", Password = "NotAnthonysActualGmailPassword@401"}
-            };
-        }
-
-        private List<Project> GetAllTestProjects()
-        {
-            return new List<Project>()
-            {
-                new Project(){ ID = 1, Name = "Project 1", Detail = "An Awesome project!", CreatedOn = new DateTime(2020,11,1) },
-                new Project(){ ID = 2, Name = "Project 2", Detail = "Another Awesome project!", CreatedOn = new DateTime(2020,1,12) },
-                new Project(){ ID = 3, Name = "Project 3", Detail = "A moderate project", CreatedOn = new DateTime(2021,3,5) },
-                new Project(){ ID = 4, Name = "Project 4", Detail = "A small project", CreatedOn = new DateTime(2021,9,3) }
-            };
-        }
-
     }
 }
