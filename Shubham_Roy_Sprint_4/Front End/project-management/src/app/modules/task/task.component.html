@@ -1,1 +1,23 @@
-<p>task works!</p>
+<table class="table table-hover caption-top my-3">
+    <caption>List of Tasks</caption>
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Project ID</th>
+        <th scope="col">Status</th>
+        <th scope="col">Assigned to User ID</th>
+        <th scope="col">Details</th>
+        <th scope="col">Created On</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of projectTasks">
+        <td>{{task.id}}</td>
+        <td>{{task.projectId}}</td>
+        <td>{{task.status}}</td>
+        <td>{{task.assignedToUser}}</td>
+        <td>{{task.detail}}</td>
+        <td>{{task.createdOn}}</td>
+      </tr>      
+    </tbody>
+  </table>
