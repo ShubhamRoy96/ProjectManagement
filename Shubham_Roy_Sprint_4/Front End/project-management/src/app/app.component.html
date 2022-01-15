@@ -1,12 +1,20 @@
-<app-navbar></app-navbar>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-4">
-            <app-sidebar></app-sidebar>
-        </div>
-        <div class="col-lg-8">
-            <router-outlet></router-outlet>
+<div class="container-fluid px-0 vh-100">
+    <div>
+        <app-navbar></app-navbar>
+    </div>
+    <div class="h-100">
+        <div class="row px-0 mx-0 h-100">
+            <div class="col-lg-2 sidebar">
+                <app-sidebar></app-sidebar>
+            </div>
+            <div class="col-lg-10">
+                <router-outlet></router-outlet>
+            </div>
         </div>
     </div>
+
+    <div>
+        <app-footer></app-footer>
+    </div>
+
 </div>
-<app-footer></app-footer>

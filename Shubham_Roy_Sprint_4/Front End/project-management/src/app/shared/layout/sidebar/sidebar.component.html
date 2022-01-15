@@ -1,6 +1,45 @@
-<ul class="list-group">
-  <li class="list-group-item"><a routerLink="/tasks">Task</a> </li>
-  <li class="list-group-item"><a routerLink="/projects">Project</a></li>
-  <li class="list-group-item"><a routerLink="/users">Users</a></li>
-  <li class="list-group-item"><a routerLink="/">Home</a></li>
-</ul>
+<!-- <div class="list-group">
+  <a class="list-group-item list-group-item-action" routerLink="/tasks">Task</a>
+  <a class="list-group-item list-group-item-action" routerLink="/projects">Project</a>
+  <a class="list-group-item list-group-item-action" routerLink="/users">Users</a>
+  <a class="list-group-item list-group-item-action" routerLink="/">Home</a>
+</div> -->
+
+<div class="p-3">
+  
+  <ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" routerLink="/">        
+        Home
+      </a>
+    </li>
+    <li>
+      <a href="#" class="nav-link link-dark" routerLink="/tasks">
+        Tasks
+      </a>
+    </li>
+    <li>
+      <a href="#" class="nav-link link-dark"routerLink="/projects">
+        Projects
+      </a>
+    </li>
+    <li>
+      <a href="#" class="nav-link link-dark"routerLink="/users">
+        Users
+      </a>
+    </li>
+  </ul>
+  <!-- <div class="dropdown">
+    <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+      <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+      <strong>mdo</strong>
+    </a>
+    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+      <li><a class="dropdown-item" href="#">New project...</a></li>
+      <li><a class="dropdown-item" href="#">Settings</a></li>
+      <li><a class="dropdown-item" href="#">Profile</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="#">Sign out</a></li>
+    </ul>
+  </div> -->
+</div>
