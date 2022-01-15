@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent, NavbarComponent, SidebarComponent, MainContentComponent, FooterComponent } from './shared';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { HeaderComponent, NavbarComponent, SidebarComponent, MainContentComponen
     FooterComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    NgbModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
