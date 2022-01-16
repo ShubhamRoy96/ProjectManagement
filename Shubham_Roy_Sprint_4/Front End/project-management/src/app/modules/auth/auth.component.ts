@@ -17,6 +17,6 @@ export class AuthComponent implements OnInit {
   }
 
   submitForm(){
-    this.router.navigate(['users']).then(() => window.location.reload());
+    this.router.navigate(['users/showUsers']).then(() => window.location.reload());
   }
 }

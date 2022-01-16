@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 const appRoutes: Routes = [
   {
     path: 'users',
-    loadChildren: () => import('./modules/user/user.module').then(m => m.UserModule)
+    loadChildren: () => import('./modules/user/user.module').then(m => m.UserModule)    
   },
   {
     path: 'projects',
@@ -21,7 +21,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'error',
-    loadChildren: () => import('./modules/error-page/error-page-routing.module').then(m => m.ErrorPageRoutingModule)
+    loadChildren: () => import('./modules/error-page/error-page.module').then(m => m.ErrorPageModule)
     
   },
   {

@@ -6,7 +6,6 @@ import { HeaderComponent, NavbarComponent, SidebarComponent, MainContentComponen
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ErrorPageComponent } from './modules/error-page/error-page.component';
 
 @NgModule({
   declarations: [
@@ -15,8 +14,7 @@ import { ErrorPageComponent } from './modules/error-page/error-page.component';
     NavbarComponent,
     SidebarComponent,
     MainContentComponent,
-    FooterComponent,
-    ErrorPageComponent
+    FooterComponent
   ],
   imports: [
     BrowserModule,
