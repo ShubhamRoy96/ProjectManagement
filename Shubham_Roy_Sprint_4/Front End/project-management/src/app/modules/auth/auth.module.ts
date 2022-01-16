@@ -11,7 +11,6 @@ import { AuthRoutingModule } from './auth-routing.module';
     AuthComponent
   ],
   imports: [
-    CommonModule,
     FontAwesomeModule,
     AuthRoutingModule
   ]

@@ -20,8 +20,13 @@ const appRoutes: Routes = [
     loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule)
   },
   {
+    path: 'error',
+    loadChildren: () => import('./modules/error-page/error-page-routing.module').then(m => m.ErrorPageRoutingModule)
+    
+  },
+  {
     path: '**',
-    loadChildren: () => import('./modules/project/project.module').then(m => m.ProjectModule)
+    redirectTo: 'error'
   }
 ]
 

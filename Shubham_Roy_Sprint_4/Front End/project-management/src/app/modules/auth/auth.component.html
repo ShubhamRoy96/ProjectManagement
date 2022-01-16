@@ -4,7 +4,7 @@
             <div class="card-body fs-2">
                 Login
             </div>
-            <form class="card-text p-3" (submit)="submitForm()">
+            <form class="card-text p-3">
                 <div class="mb-3">
                     <label for="emailInput" class="form-label">Email address</label>
                     <input type="email" class="form-control" id="emailInput" aria-describedby="emailHelp">
@@ -17,7 +17,7 @@
                     <input type="checkbox" class="form-check-input" id="savePassword">
                     <label class="form-check-label" for="savePassword">Save Password</label>
                 </div> -->
-                <button type="submit" class="mb-3 mx-auto col-12 btn btn-primary">Sign In <fa-icon class="mx-2 fa-sm" [icon]="icoArrow"></fa-icon> </button>
+                <button type="button" (click)="submitForm()" class="mb-3 mx-auto col-12 btn btn-primary">Sign In <fa-icon class="mx-2 fa-sm" [icon]="icoArrow"></fa-icon> </button>
             </form>
         </div>
     </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -11,12 +11,12 @@ export class AuthComponent implements OnInit {
 
 
   icoArrow = faArrowRight;
-  constructor(private router : Router) { }
+  constructor(private router : Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
   }
 
   submitForm(){
-    this.router.navigate(['/users']);
+    this.router.navigate(['users']).then(() => window.location.reload());
   }
 }
