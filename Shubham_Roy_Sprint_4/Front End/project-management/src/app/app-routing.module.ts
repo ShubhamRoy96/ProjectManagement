@@ -5,15 +5,23 @@ import { Routes, RouterModule } from '@angular/router';
 const appRoutes: Routes = [
   {
     path: 'users',
-    loadChildren: () => import('./modules/user/user.module').then(module => module.UserModule)
+    loadChildren: () => import('./modules/user/user.module').then(m => m.UserModule)
   },
   {
     path: 'projects',
-    loadChildren: () => import('./modules/project/project.module').then(module => module.ProjectModule) 
+    loadChildren: () => import('./modules/project/project.module').then(m => m.ProjectModule) 
   },
   {
     path: 'tasks',
-    loadChildren: () => import('./modules/task/task.module').then(module => module.TaskModule) 
+    loadChildren: () => import('./modules/task/task.module').then(m => m.TaskModule) 
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule)
+  },
+  {
+    path: '**',
+    loadChildren: () => import('./modules/project/project.module').then(m => m.ProjectModule)
   }
 ]
 

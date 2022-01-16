@@ -3,11 +3,16 @@
         <app-navbar></app-navbar>
     </div>
     <div class="h-100">
-        <div class="row px-0 mx-0 h-100">
+        <div *ngIf="!router.url.includes('login')" class="row px-0 mx-0 h-100">
             <div class="col-lg-2 sidebar">
-                <app-sidebar></app-sidebar>
+                <app-sidebar ></app-sidebar>
             </div>
             <div class="col-lg-10">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+        <div *ngIf="router.url.includes('login')" class="row px-0 mx-0 h-100">
+            <div>
                 <router-outlet></router-outlet>
             </div>
         </div>
