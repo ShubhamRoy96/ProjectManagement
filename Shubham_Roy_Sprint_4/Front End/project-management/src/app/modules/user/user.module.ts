@@ -4,7 +4,6 @@ import { UserComponent } from './user.component';
 import { UserRoutingModule } from './user-routing.module';
 import { AddUserComponent } from './add-user/add-user.component';
 import { ShowUsersComponent } from './show-users/show-users.component';
-import { RouterModule } from '@angular/router';
 
 
 

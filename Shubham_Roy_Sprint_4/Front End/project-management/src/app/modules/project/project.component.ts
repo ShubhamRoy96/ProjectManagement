@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Project } from 'src/app/core';
-import { mockProjects } from './mock-projects';
 
 @Component({
   selector: 'app-project',
@@ -9,7 +7,6 @@ import { mockProjects } from './mock-projects';
 })
 export class ProjectComponent implements OnInit {
 
-  projects: Project[] = mockProjects;
   constructor() { }
 
   ngOnInit(): void {
