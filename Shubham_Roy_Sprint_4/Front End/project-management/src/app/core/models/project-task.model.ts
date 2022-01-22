@@ -4,6 +4,6 @@ export interface ProjectTask{
     projectId: number;
     status: number;
     assignedToUser: number;
-    detail?: string;
+    detail: string;
     createdOn?: Date;
 }

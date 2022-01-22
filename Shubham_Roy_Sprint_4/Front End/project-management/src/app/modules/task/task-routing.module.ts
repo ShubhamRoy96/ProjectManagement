@@ -12,11 +12,15 @@ const taskRoutes: Routes = [
     children:[
       {
         path: 'showTasks',
-        component: ShowTasksComponent
+        loadChildren: ()=> import('./show-tasks/show-tasks.module').then(m => m.ShowTasksModule)
       },
       {
         path: 'addTask',
-        component: AddTaskComponent
+        loadChildren: ()=> import('./add-task/add-task.module').then(m => m.AddTaskModule)
+      },
+      {
+        path: ':project/:assignedToUser/:status/:detail',
+        loadChildren: ()=> import('./update-task/update-task.module').then(m => m.UpdateTaskModule)
       }
     ]
   }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Project } from 'src/app/core';
 import { mockProjects } from './mock-projects';
 
@@ -11,7 +12,7 @@ export class ShowProjectsComponent implements OnInit {
 
 
   projects: Project[] = []
-  constructor() {
+  constructor(private router: Router) {
     this.projects = mockProjects;
    }
 
@@ -19,4 +20,8 @@ export class ShowProjectsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  rowClicked(name: string, detail: string){
+    // this.router.navigate(['users/showUsers/test/test/test'])
+    this.router.navigate(['projects/', name, detail])
+  }
 }

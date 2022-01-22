@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from 'src/app/core';
 import { mockUsers } from './mock-users';
 
@@ -10,11 +11,16 @@ import { mockUsers } from './mock-users';
 export class ShowUsersComponent implements OnInit {
 
   users: User[] = []
-  constructor() {
+  constructor(private router: Router) {
     this.users = mockUsers;
    }
 
   ngOnInit(): void {
+  }
+
+  rowClicked(firstName: string, lastName: string, email: string){
+    // this.router.navigate(['users/showUsers/test/test/test'])
+    this.router.navigate(['users/', firstName, lastName, email])
   }
 
 }

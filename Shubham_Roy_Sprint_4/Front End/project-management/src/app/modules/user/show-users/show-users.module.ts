@@ -7,10 +7,11 @@ import { showUsersRoutingModule } from './show-users-routing.module';
 
 @NgModule({
   declarations: [
+    ShowUsersComponent
   ],
   imports: [
     CommonModule,
     showUsersRoutingModule
   ]
 })
-export class AddUserModule { }
+export class showUserModule { }

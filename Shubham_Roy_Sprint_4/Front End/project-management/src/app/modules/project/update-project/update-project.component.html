@@ -1,0 +1,35 @@
+<div class="my-3">
+    <div class="card shadow bg-body rounded">
+      <div class="row m-3">
+        <div class="col-10 text-start align-middle">
+          <span class="fs-3">UPDATE PROJECT</span>
+        </div>
+        <div class="col-2 justify-content-center align-items-center ">
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-outline-danger me-2" type="button" (click)="open()">Delete</button> <!--change routerLink to actual functionality-->
+            <button class="btn btn-outline-danger me-2" type="button" routerLink="/projects/showProjects">Cancel</button> <!--change routerLink to actual functionality-->
+            <button class="btn btn-success me-2" type="button">Save</button> <!--change routerLink to actual functionality (routerLink="/projects/addProject")-->
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="container-fluid m-3">
+        <div class="row my-2">
+            <div class="col">
+                <p>Name</p>
+            </div>
+            <div class="col mx-2">
+                <input type="text" class="form-control" aria-describedby="Name" placeholder="Enter Name" [value]="name">
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col">
+                <p>Detail</p>
+            </div>
+            <div class="col mx-2">
+                <input type="text" class="form-control" aria-describedby="Detail" placeholder="Enter Detail" [value]="detail">
+            </div>
+        </div>        
+      </div>
+    </div>
+  </div>

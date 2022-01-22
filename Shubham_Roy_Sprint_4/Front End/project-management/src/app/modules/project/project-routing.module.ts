@@ -12,11 +12,15 @@ const projectRoutes: Routes = [
     children:[
       {
         path: 'showProjects',
-        component: ShowProjectsComponent
+        loadChildren: ()=> import('./show-projects/show-projects.module').then(m => m.ShowProjectsModule)
       },
       {
         path: 'addProject',
-        component: AddProjectComponent
+        loadChildren: ()=> import('./add-project/add-project.module').then(m => m.AddProjectModule)
+      },
+      {
+        path: ':name/:detail',
+        loadChildren: ()=> import('./update-project/update-project.module').then(m => m.UpdateProjectModule)
       }
     ]
   }

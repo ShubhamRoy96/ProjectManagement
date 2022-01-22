@@ -4,14 +4,13 @@ import { TaskComponent } from './task.component';
 import { TaskRoutingModule } from './task-routing.module';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { ShowTasksComponent } from './show-tasks/show-tasks.component';
+import { UpdateTaskComponent } from './update-task/update-task.component';
 
 
 
 @NgModule({
   declarations: [
-    TaskComponent,
-    AddTaskComponent,
-    ShowTasksComponent
+    TaskComponent
   ],
   imports: [
     CommonModule,

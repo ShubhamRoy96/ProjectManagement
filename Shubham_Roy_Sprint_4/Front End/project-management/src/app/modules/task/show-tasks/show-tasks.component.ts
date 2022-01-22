@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProjectTask } from 'src/app/core';
 import { mockTasks } from './mock-tasks';
 
@@ -10,7 +11,7 @@ import { mockTasks } from './mock-tasks';
 export class ShowTasksComponent implements OnInit {
 
   projectTasks: ProjectTask[] = []
-  constructor() {
+  constructor(private router: Router) {
     this.projectTasks = mockTasks;
    }
 
@@ -18,4 +19,7 @@ export class ShowTasksComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  rowClicked(project: number, assignedToUser: number, status: number, detail: string){
+    this.router.navigate(['tasks/', project, assignedToUser, status, detail])
+  }
 }

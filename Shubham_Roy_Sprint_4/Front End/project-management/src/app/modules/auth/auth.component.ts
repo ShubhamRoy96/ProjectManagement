@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faUser, faUnlock } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-auth',
@@ -11,6 +11,8 @@ export class AuthComponent implements OnInit {
 
 
   icoArrow = faArrowRight;
+  icoEmail = faUser;
+  icoPass = faUnlock;
   constructor(private router : Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
