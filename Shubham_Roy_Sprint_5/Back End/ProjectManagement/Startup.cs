@@ -83,6 +83,14 @@ namespace ProjectManagement
             services.AddSingleton<IRepository<User>, UserInMemDBController>();
             services.AddSingleton<IRepository<ProjectTask>, TaskInMemDBController>();
             services.AddSingleton<IRepository<Project>, ProjectInMemDBController>();
+            services.AddCors(
+                options =>
+                {
+                    options.AddPolicy(name: "AllowCORS", builder => {
+                        builder.AllowAnyOrigin();
+                    });
+                }
+                );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -98,6 +106,8 @@ namespace ProjectManagement
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("AllowCORS");
 
             app.UseAuthentication();
 

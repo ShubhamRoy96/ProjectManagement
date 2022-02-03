@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/core';
+import { ApiService } from 'src/app/core/services/api.service';
 import { mockUsers } from './mock-users';
 
 @Component({
@@ -11,8 +12,9 @@ import { mockUsers } from './mock-users';
 export class ShowUsersComponent implements OnInit {
 
   users: User[] = []
-  constructor(private router: Router) {
-    this.users = mockUsers;
+  constructor(private router: Router, private apiService: ApiService) {
+    //this.users = mockUsers;
+    this.apiService.get('/User').subscribe(data => this.users = data, err => console.log(err))
    }
 
   ngOnInit(): void {
