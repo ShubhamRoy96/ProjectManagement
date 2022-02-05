@@ -20,9 +20,8 @@ export class ShowUsersComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  rowClicked(firstName: string, lastName: string, email: string){
-    // this.router.navigate(['users/showUsers/test/test/test'])
-    this.router.navigate(['users/', firstName, lastName, email])
+  rowClicked(id: number, firstName: string, lastName: string, email: string){
+    this.router.navigate(['users/', id, firstName, lastName, email])
   }
 
 }

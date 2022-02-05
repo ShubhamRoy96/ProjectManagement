@@ -18,19 +18,16 @@ export class ApiService {
     return this.http.get(`${environment.api_url}${path}`, { params }).pipe(catchError(this.formatError))
   }
 
-  put(){
-
+  put(path: string, body: Object = {}, httpOptions?: Object): Observable<any>{
+    return this.http.put(`${environment.api_url}${path}`, JSON.stringify(body), httpOptions)
   }
 
 
-  post(path: string, body: Object = {}): Observable<any>{
-    let httpHeaders = new HttpHeaders({
-      'Content-Type' : 'application/json'
-    });
-    return this.http.post(`${environment.api_url}${path}`, JSON.stringify(body), {headers: httpHeaders})
+  post(path: string, body: Object = {}, httpOptions?: Object): Observable<any>{    
+    return this.http.post(`${environment.api_url}${path}`, JSON.stringify(body), httpOptions)
   }
 
-  delete(){
-    
+  delete(path: string, httpOptions?: Object): Observable<any>{
+    return this.http.delete(`${environment.api_url}${path}`, httpOptions)
   }
 }

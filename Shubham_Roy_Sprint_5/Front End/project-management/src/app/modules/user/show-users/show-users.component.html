@@ -24,7 +24,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of users" (click)="rowClicked(user.firstName, user.lastName, user.email)" >
+        <tr *ngFor="let user of users" (click)="rowClicked(user.id, user.firstName, user.lastName, user.email)" >
           <td>{{user.id}}</td>
           <td>{{user.firstName}}</td>
           <td>{{user.lastName}}</td>

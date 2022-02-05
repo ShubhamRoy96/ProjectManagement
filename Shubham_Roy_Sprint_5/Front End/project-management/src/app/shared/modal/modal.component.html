@@ -7,7 +7,10 @@
   <div class="modal-body">
     <p innerHTML={{innerHTML}} ></p>
   </div>
-  <div class="modal-footer">
+  <div *ngIf="isNormalButtonsShown" class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('Cancel clicked')">Cancel</button>
     <button type="button" class="btn btn-danger" (click)="performOK()">Ok</button>
+  </div>
+  <div *ngIf="!isNormalButtonsShown" class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss()">OK</button>
   </div>

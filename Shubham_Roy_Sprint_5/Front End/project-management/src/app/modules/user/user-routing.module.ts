@@ -20,7 +20,7 @@ const userRoutes: Routes = [
         loadChildren: ()=> import('./show-users/show-users.module').then(m => m.showUserModule)
       },
       {
-        path: ':firstName/:lastName/:email',
+        path: ':id/:firstName/:lastName/:email',
         loadChildren: ()=> import('./update-user/update-user.module').then(m => m.UpdateUserModule)
       }
     ]

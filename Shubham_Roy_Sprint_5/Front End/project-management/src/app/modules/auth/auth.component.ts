@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -44,7 +45,14 @@ export class AuthComponent implements OnInit {
       creds.password
     )
     console.log(adminUser)
-    this.apiService.post('/Authentication/Login', adminUser).pipe().subscribe(data => this.onLoginSuccess(data))
+
+    let httpOptions:Object = {
+
+      headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+      })
+   }
+    this.apiService.post('/Authentication/Login', adminUser, httpOptions).subscribe(data => this.onLoginSuccess(data))
     
   }
 
