@@ -20,6 +20,7 @@ namespace ProjectManagement.Controllers
         [Route("Login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [Produces("application/json")]
         public IActionResult Login(User adminUser)
         {
             var token = jwtAuthenticationManager.Authenticate(adminUser);

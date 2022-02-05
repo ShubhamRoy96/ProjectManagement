@@ -4,22 +4,18 @@
             <div class="card-body fs-2">
                 Login
             </div>
-            <form class="card-text p-5">                
+            <form class="card-text p-5" [formGroup]="loginForm" (ngSubmit)= "submitForm()">                
                 <div class="input-group mb-3">
                     <div class="input-group-text" id="btnGroupAddon"><fa-icon [icon]="icoEmail"></fa-icon></div>
-                    <input type="email" class="form-control" id="emailInput" aria-describedby="emailHelp" placeholder="Email">
+                    <input type="email" formControlName="email" class="form-control" id="emailInput" aria-describedby="emailHelp" placeholder="Email">
                 </div>
                 <div class="input-group pb-3">
                     <div class="input-group-text" id="btnGroupAddon"><fa-icon [icon]="icoPass"></fa-icon></div>
-                    <input type="password" class="form-control" id="passwordInput" placeholder="Password">
+                    <input type="password" formControlName="password" class="form-control" id="passwordInput" placeholder="Password">
                 </div>
-                <!-- <div class="text-muted mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="savePassword">
-                    <label class="form-check-label" for="savePassword">Save Password</label>
-                </div> -->
                 <div class="my-3 neumorphbtn">
                     <div>
-                        <button type="button" (click)="submitForm()" class="col-12 btn btn-primary border border-0 rounded-pill">Sign In <fa-icon class="mx-2 fa-sm" [icon]="icoArrow"></fa-icon> </button>
+                        <button type="submit" class="col-12 btn btn-primary border border-0 rounded-pill">Sign In <fa-icon class="mx-2 fa-sm" [icon]="icoArrow"></fa-icon> </button>
                     </div>
                 </div>
                 

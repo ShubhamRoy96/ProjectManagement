@@ -88,6 +88,7 @@ namespace ProjectManagement
                 {
                     options.AddPolicy(name: "AllowCORS", builder => {
                         builder.AllowAnyOrigin();
+                        builder.AllowAnyHeader();
                     });
                 }
                 );

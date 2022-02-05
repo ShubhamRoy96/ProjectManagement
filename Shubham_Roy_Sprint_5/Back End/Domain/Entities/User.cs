@@ -5,18 +5,18 @@ namespace Domain.Entities
 {
     public class User : IEquatable<User>
     {
-        [Required]
+        //[Required]
         public int ID { get; set; }
 
-        [Required]
+        //[Required]
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
-        [Required]
+        //[Required]
         public string Email { get; set; }
 
-        [Required]
+        //[Required]
         public string Password { get; set; }
 
         public override bool Equals(object obj)

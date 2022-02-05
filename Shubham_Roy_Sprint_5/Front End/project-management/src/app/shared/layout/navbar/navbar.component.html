@@ -14,7 +14,7 @@
         </form>
       </div> -->
       <div *ngIf="!router.url.includes('login')" class="d-flex">
-        <button class="btn btn-outline-danger" routerLink="login">Logout</button>
+        <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
       </div>
     </div>
   </nav>

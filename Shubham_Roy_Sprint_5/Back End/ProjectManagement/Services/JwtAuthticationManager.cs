@@ -16,8 +16,8 @@ namespace ProjectManagement.Services
 
         private readonly List<User> adminUsers = new List<User>()
         {
-            new User{ ID = 420, FirstName = "SuperAdmin1", LastName = "", Password = "SuperPwd1", Email = ""},
-            new User{ ID = 420, FirstName = "SuperAdmin2", LastName = "", Password = "SuperPwd2", Email = ""}
+            new User{ ID = 420, FirstName = "SuperAdmin1", LastName = "", Password = "SuperPwd1", Email = "SuperAdmin1@projman.com"},
+            new User{ ID = 420, FirstName = "SuperAdmin2", LastName = "", Password = "SuperPwd2", Email = "SuperAdmin2@projman.com"}
         };
 
         public JwtAuthticationManager(string key)
@@ -27,7 +27,7 @@ namespace ProjectManagement.Services
 
         public string Authenticate(User loginAdminUser)
         {
-            if (!adminUsers.Any(user => user.FirstName == loginAdminUser.FirstName && user.Password == loginAdminUser.Password))
+            if (!adminUsers.Any(user => user.Email == loginAdminUser.Email && user.Password == loginAdminUser.Password))
             {
                 return null;
             }
@@ -37,7 +37,7 @@ namespace ProjectManagement.Services
                 Expires = DateTime.UtcNow.AddHours(12),
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, loginAdminUser.FirstName)
+                    new Claim(ClaimTypes.Email, loginAdminUser.Email)
                 }),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256)
             };
