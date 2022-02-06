@@ -7,7 +7,7 @@
         <div class="col-2 justify-content-center align-items-center ">
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <button class="btn btn-outline-danger me-2" type="button" routerLink="../showUsers">Cancel</button> <!--change routerLink to actual save functionality-->
-            <button class="btn btn-success me-2" type="button" routerLink="/users/addUser">Save</button> <!--change routerLink to actual save functionality-->
+            <button class="btn btn-success me-2" type="button" (click)="addUser()">Save</button> <!--change routerLink to actual save functionality-->
           </div>
         </div>
       </div>
@@ -18,7 +18,7 @@
                 <p>First Name</p>
             </div>
             <div class="col mx-2">
-                <input type="text" class="form-control" aria-describedby="First Name" placeholder="Enter First Name">
+                <input [(ngModel)]="firstName" type="text" class="form-control" aria-describedby="First Name" placeholder="Enter First Name">
             </div>
         </div>
         <div class="row my-2">
@@ -26,7 +26,7 @@
                 <p>Last Name</p>
             </div>
             <div class="col mx-2">
-                <input type="text" class="form-control" aria-describedby="Last Name" placeholder="Enter Last Name">
+                <input [(ngModel)]="lastName" type="text" class="form-control" aria-describedby="Last Name" placeholder="Enter Last Name">
             </div>
         </div>
         <div class="row my-2">
@@ -34,7 +34,7 @@
                 <p>E-Mail ID</p>
             </div>
             <div class="col mx-2">
-                <input type="text" class="form-control" aria-describedby="Email ID" placeholder="Enter Email ID">
+                <input [(ngModel)]="email" type="text" class="form-control" aria-describedby="Email ID" placeholder="Enter Email ID">
             </div>
         </div>
         <div class="row my-2">
@@ -42,7 +42,7 @@
                 <p>Password</p>
             </div>
             <div class="col mx-2">
-                <input type="text" class="form-control" aria-describedby="Password" placeholder="Enter Password">
+                <input [(ngModel)]="password" type="text" class="form-control" aria-describedby="Password" placeholder="Enter Password">
             </div>
         </div>
       </div>

@@ -19,7 +19,7 @@
                 <p>First Name</p>
             </div>
             <div class="col mx-2">
-                <input type="text" class="form-control" aria-describedby="First Name" placeholder="Enter First Name" (change)="firstName" [value]="firstName">
+                <input [(ngModel)]="firstName" type="text" class="form-control" aria-describedby="First Name" placeholder="Enter First Name">
             </div>
         </div>
         <div class="row my-2">
@@ -27,7 +27,7 @@
                 <p>Last Name</p>
             </div>
             <div class="col mx-2">
-                <input type="text" class="form-control" aria-describedby="Last Name" placeholder="Enter Last Name" [value]="lastName">
+                <input [(ngModel)]="lastName" type="text" class="form-control" aria-describedby="Last Name" placeholder="Enter Last Name">
             </div>
         </div>
         <div class="row my-2">
@@ -35,7 +35,7 @@
                 <p>E-Mail ID</p>
             </div>
             <div class="col mx-2">
-                <input type="text" class="form-control" aria-describedby="Email ID" placeholder="Enter Email ID" [value]="email">
+                <input [(ngModel)]="email" type="text" class="form-control" aria-describedby="Email ID" placeholder="Enter Email ID">
             </div>
         </div>
       </div>

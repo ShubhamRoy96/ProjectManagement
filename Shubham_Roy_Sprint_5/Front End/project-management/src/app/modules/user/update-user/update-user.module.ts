@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UpdateUserComponent } from './update-user.component';
 import { updateUsersRoutingModule } from './update-user-routing.module';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -11,7 +12,8 @@ import { updateUsersRoutingModule } from './update-user-routing.module';
   ],
   imports: [
     CommonModule,
-    updateUsersRoutingModule
+    updateUsersRoutingModule,
+    FormsModule
   ]
 })
 export class UpdateUserModule { }

@@ -50,7 +50,8 @@ export class AuthComponent implements OnInit {
 
       headers: new HttpHeaders({
           'Content-Type': 'application/json'
-      })
+      }),
+      responseType: 'text'
    }
     this.apiService.post('/Authentication/Login', adminUser, httpOptions).subscribe(data => this.onLoginSuccess(data))
     
