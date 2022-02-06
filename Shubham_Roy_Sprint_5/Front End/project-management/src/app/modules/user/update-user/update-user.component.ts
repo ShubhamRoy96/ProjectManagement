@@ -1,6 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { ConstantPool } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'src/app/core';
@@ -46,24 +46,37 @@ export class UpdateUserComponent implements OnInit {
     compInstance.navigateTo = 'users/showUsers';
   }
 
-  deleteUser() {
+  @HostListener('window:click', ['$event'])
+  onWindowClick(event: Event) {
+    if ((event.target as HTMLButtonElement).id == "confirmOperation") {
+      this.deleteUser();
+    }
+  }
+
+  confirmDeletion() {
 
     const modalRef = this.modalService.open(ModalComponent);
     var compInstance = modalRef.componentInstance;
     compInstance.modalTitleText = "User Deletion";
-    compInstance.innerHTML = `<strong>Are you sure you want to delete <span class="text-primary">${this.firstName + " " + this.lastName}</span> profile?</strong></p>
-    <p>All information associated to this user profile will be permanently deleted.
+    compInstance.innerHTML = `<strong>Are you sure you want to delete the user <span class="text-primary">${this.firstName + " " + this.lastName}</span> ?</strong></p>
+    <p>All information associated to this user will be permanently deleted.
     <span class="text-danger">This operation can not be undone.</span>`;
-    compInstance.navigateTo = "/users/showUsers";
-    compInstance.performOK().subscribe((data: any) => {
-      if (data) {
-        let httpOptions: Object = {
-          responseType: 'text'
-        }
-        this.userService.deleteUser(this.id, httpOptions).subscribe(data => compInstance.innerHTML = data)
-      }
-    })
+  }
 
+  deleteUser() {
+    let httpOptions: Object = {
+      responseType: 'text'
+    }
+    this.userService.deleteUser(this.id, httpOptions).subscribe(data => this.userDeleted(data))
+  }
+
+  userDeleted(message: string){
+    const modalRef = this.modalService.open(ModalComponent);
+    var compInstance = modalRef.componentInstance;
+    compInstance.isNormalButtonsShown = false;
+    compInstance.modalTitleText = "Success";
+    compInstance.innerHTML = message
+    compInstance.navigateTo = "/users/showUsers";
   }
 
 }

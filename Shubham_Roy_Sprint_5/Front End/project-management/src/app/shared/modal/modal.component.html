@@ -9,7 +9,7 @@
   </div>
   <div *ngIf="isNormalButtonsShown" class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('Cancel clicked')">Cancel</button>
-    <button type="button" class="btn btn-danger" (click)="closeModal()">Ok</button>
+    <button id="confirmOperation" type="button" class="btn btn-danger" (click)="closeModal()">Ok</button>
   </div>
   <div *ngIf="!isNormalButtonsShown" class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">OK</button>

@@ -42,10 +42,10 @@ export class ModalComponent implements OnInit {
   }
 
   closeModal(){
+    this.activeModal.close();
     if(this.navigateTo)
     {
       this.router.navigate([this.navigateTo])
     }
-    this.activeModal.close();
   }
 }
