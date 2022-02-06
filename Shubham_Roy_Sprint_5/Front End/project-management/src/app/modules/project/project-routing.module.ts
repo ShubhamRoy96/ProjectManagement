@@ -19,7 +19,7 @@ const projectRoutes: Routes = [
         loadChildren: ()=> import('./add-project/add-project.module').then(m => m.AddProjectModule)
       },
       {
-        path: ':name/:detail',
+        path: ':id/:name/:detail',
         loadChildren: ()=> import('./update-project/update-project.module').then(m => m.UpdateProjectModule)
       }
     ]

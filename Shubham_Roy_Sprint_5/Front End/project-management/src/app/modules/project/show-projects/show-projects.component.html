@@ -23,7 +23,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let project of projects" (click)="rowClicked(project.name, project.detail)" >
+        <tr *ngFor="let project of projects" (click)="rowClicked(project.id, project.name, project.detail)" >
           <td>{{project.id}}</td>
           <td>{{project.name}}</td>
           <td>{{project.detail}}</td>

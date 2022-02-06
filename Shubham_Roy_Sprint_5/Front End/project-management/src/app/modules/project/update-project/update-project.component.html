@@ -8,7 +8,7 @@
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <button class="btn btn-outline-danger me-2" type="button" (click)="open()">Delete</button> <!--change routerLink to actual functionality-->
             <button class="btn btn-outline-danger me-2" type="button" routerLink="/projects/showProjects">Cancel</button> <!--change routerLink to actual functionality-->
-            <button class="btn btn-success me-2" type="button">Save</button> <!--change routerLink to actual functionality (routerLink="/projects/addProject")-->
+            <button class="btn btn-success me-2" type="button" (click)="updateProject()">Save</button> <!--change routerLink to actual functionality (routerLink="/projects/addProject")-->
           </div>
         </div>
       </div>
@@ -19,7 +19,7 @@
                 <p>Name</p>
             </div>
             <div class="col mx-2">
-                <input type="text" class="form-control" aria-describedby="Name" placeholder="Enter Name" [value]="name">
+                <input [(ngModel)]="name" type="text" class="form-control" aria-describedby="Name" placeholder="Enter Name">
             </div>
         </div>
         <div class="row my-2">
@@ -27,7 +27,7 @@
                 <p>Detail</p>
             </div>
             <div class="col mx-2">
-                <input type="text" class="form-control" aria-describedby="Detail" placeholder="Enter Detail" [value]="detail">
+                <input [(ngModel)]="detail" type="text" class="form-control" aria-describedby="Detail" placeholder="Enter Detail">
             </div>
         </div>        
       </div>

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { updateProjectRoutingModule } from './update-project-routing.module';
 import { UpdateProjectComponent } from './update-project.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -11,7 +12,8 @@ import { UpdateProjectComponent } from './update-project.component';
   ],
   imports: [
     CommonModule,
-    updateProjectRoutingModule
+    updateProjectRoutingModule,
+    FormsModule
   ]
 })
 export class UpdateProjectModule { }

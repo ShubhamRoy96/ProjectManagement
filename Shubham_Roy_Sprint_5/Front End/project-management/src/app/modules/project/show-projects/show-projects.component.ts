@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Project } from 'src/app/core';
 import { ApiService } from 'src/app/core/services/api.service';
+import { ProjectService } from 'src/app/core/services/project.service';
 import { mockProjects } from './mock-projects';
 
 @Component({
@@ -13,17 +14,14 @@ export class ShowProjectsComponent implements OnInit {
 
 
   projects: Project[] = []
-  constructor(private router: Router, private apiService: ApiService) {
-    // this.projects = mockProjects;
-    apiService.get('/Project').subscribe(data => this.projects = data, err => console.log(err))
-   }
+  constructor(private router: Router, private projectService: ProjectService) {}
 
 
   ngOnInit(): void {
+    this.projectService.getAllProjects().subscribe(data => this.projects = data)
   }
 
-  rowClicked(name: string, detail: string){
-    // this.router.navigate(['users/showUsers/test/test/test'])
-    this.router.navigate(['projects/', name, detail])
+  rowClicked(id: number, name: string, detail: string){
+    this.router.navigate(['projects/', id, name, detail])
   }
 }
