@@ -27,6 +27,11 @@ namespace ProjectManagement.Controllers.DBController
         public bool Delete(int ID)
         {
             var isSuccess = false;
+            var relatedTasks = _dbContext.ProjectTasks.ToList().Where(f => f.ProjectID == ID).Count();
+            if (relatedTasks > 0)
+            {
+                return isSuccess;
+            }
             var foundProject = RetrieveByID(ID);
             _dbContext.Projects.Remove(foundProject);
             _dbContext.SaveChanges();
