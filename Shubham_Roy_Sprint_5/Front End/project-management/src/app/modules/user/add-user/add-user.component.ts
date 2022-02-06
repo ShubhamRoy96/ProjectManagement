@@ -1,7 +1,8 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'src/app/core';
-import { ApiService } from 'src/app/core/services/api.service';
+import { UserService } from 'src/app/core/services/user.service';
+import { ModalComponent } from 'src/app/shared';
 
 @Component({
   selector: 'app-add-user',
@@ -15,23 +16,24 @@ export class AddUserComponent implements OnInit {
   email: string = "";
   password: string = "";
 
-  constructor(private apiService: ApiService) { }
+  constructor(private userService: UserService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
   }
 
   addUser(){
-
     const newUser: User = new User(0, this.firstName, this.lastName, this.email, this.password)
+    this.userService.addUser(newUser).subscribe(data => this.userAdded(data))
+  }
 
-    let httpOptions: Object = {
-      headers: new HttpHeaders(
-        {
-          'Content-Type': 'application/json'
-        }       
-      )
-    }
-    this.apiService.post('/User', newUser, httpOptions).subscribe(data => console.log(data))
+  userAdded(createdUser: User)
+  {
+    console.log(createdUser)
+    const compInstance = this.modalService.open(ModalComponent).componentInstance;
+    compInstance.isNormalButtonsShown = false;
+    compInstance.modalTitleText = "Success";
+    compInstance.innerHTML = `User <span class="text-primary">${this.firstName + " " + this.lastName}</span> created succesfully</p>`;
+    compInstance.navigateTo = 'users/showUsers';
   }
 
 }

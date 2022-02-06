@@ -10,7 +10,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
   
-  get(path: string, params: HttpParams = new HttpParams()): Observable<any>{
+  get(path: string, params: HttpParams = new HttpParams(), httpOptions?: Object): Observable<any>{
     return this.http.get(`${environment.api_url}${path}`, { params })
   }
 

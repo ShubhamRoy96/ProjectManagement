@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-title">Profile deletion</h4>
+    <h4 class="modal-title" id="modal-title">{{ modalTitleText }}</h4>
     <a type="button" class="text-danger" aria-describedby="modal-title" (click)="activeModal.dismiss('Cross click')">
       <fa-icon [icon]="icoClose"></fa-icon>
     </a>
@@ -9,8 +9,8 @@
   </div>
   <div *ngIf="isNormalButtonsShown" class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('Cancel clicked')">Cancel</button>
-    <button type="button" class="btn btn-danger" (click)="performOK()">Ok</button>
+    <button type="button" class="btn btn-danger" (click)="closeModal()">Ok</button>
   </div>
   <div *ngIf="!isNormalButtonsShown" class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss()">OK</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">OK</button>
   </div>
