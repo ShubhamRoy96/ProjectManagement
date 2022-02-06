@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProjectTask } from 'src/app/core';
+import { ProjectTask, statuses } from 'src/app/core';
 import { TaskService } from 'src/app/core/services/task.service';
 import { ModalComponent } from 'src/app/shared';
 
@@ -10,17 +10,20 @@ import { ModalComponent } from 'src/app/shared';
   templateUrl: './update-task.component.html',
   styleUrls: ['./update-task.component.css']
 })
+
 export class UpdateTaskComponent implements OnInit {
 
   id: number = 0;
   project: number = 0;
   assignedToUser: number = 0;
-  status: number = 0;
+  status: string = "";
   detail: string = "";
+  keys: any;
 
   constructor(private currentRoute: ActivatedRoute, private modalService: NgbModal, private taskService: TaskService) {
     this.currentRoute.params.subscribe((params) => {
       this.id = params['id']
+      this.keys = Object.keys(statuses).filter(f => isNaN(Number(f)))
       // this.project = params['project']
       // this.assignedToUser = params['assignedToUser']
       // this.status = params['status']
@@ -34,12 +37,12 @@ export class UpdateTaskComponent implements OnInit {
   setTask(task: ProjectTask) {
     this.project = task.projectID;
     this.assignedToUser = task.assignedToUserID;
-    this.status = task.status;
+    this.status = statuses[task.status];
     this.detail = task.detail;
   }
 
   updateTask() {
-    const updatedTask: ProjectTask = new ProjectTask(this.id, this.project, this.status, this.assignedToUser, this.detail, new Date());
+    const updatedTask: ProjectTask = new ProjectTask(this.id, this.project, Number(statuses[<any>this.status]), this.assignedToUser, this.detail, new Date());
     this.taskService.updateTask(updatedTask).subscribe(data => this.TaskUpdated(data))
   }
 
@@ -83,5 +86,10 @@ export class UpdateTaskComponent implements OnInit {
     compInstance.modalTitleText = "Success";
     compInstance.innerHTML = message
     compInstance.navigateTo = "/tasks/showTasks";
+  }
+
+  clicked(status: string){
+    console.log(status)
+    this.status = status
   }
 }

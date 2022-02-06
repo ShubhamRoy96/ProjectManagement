@@ -17,3 +17,10 @@ export class ProjectTask{
     }
 
 }
+
+export enum statuses {
+    New = 1,
+    "In Progress" = 2,
+    QA = 3,
+    Completed = 4
+  }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProjectTask } from 'src/app/core';
+import { ProjectTask, statuses } from 'src/app/core';
 import { ApiService } from 'src/app/core/services/api.service';
 import { TaskService } from 'src/app/core/services/task.service';
 import { mockTasks } from './mock-tasks';
@@ -23,5 +23,9 @@ export class ShowTasksComponent implements OnInit {
 
   rowClicked(id: any){
     this.router.navigate(['tasks/', id])
+  }
+
+  GetStatus(status: number): string{
+    return statuses[status]
   }
 }

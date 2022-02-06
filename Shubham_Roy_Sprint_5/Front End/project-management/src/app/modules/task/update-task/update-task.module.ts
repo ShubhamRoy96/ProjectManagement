@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UpdateTaskComponent } from './update-task.component';
 import { updateTaskRoutingModule } from './update-task-routing.module';
 import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -13,7 +14,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     updateTaskRoutingModule,
-    FormsModule
+    FormsModule,
+    NgbModule
   ]
 })
 export class UpdateTaskModule { }

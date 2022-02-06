@@ -28,7 +28,7 @@
         <tr *ngFor="let task of projectTasks" (click)="rowClicked(task.id)">
           <td>{{task.id}}</td>
           <td>{{task.projectID}}</td>
-          <td>{{task.status}}</td>
+          <td>{{GetStatus(task.status)}}</td>
           <td>{{task.assignedToUserID}}</td>
           <td>{{task.detail}}</td>
           <td>{{task.createdOn}}</td>
