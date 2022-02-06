@@ -33,7 +33,7 @@ export class ProjectService {
     return this.apiService.get('/Project', undefined, httpOptions)
   }
 
-  getProject(): Observable<Array<Project>>{
+  getProject(id: number): Observable<Project>{
     let httpOptions: Object = {
       headers: new HttpHeaders(
         {
@@ -41,7 +41,7 @@ export class ProjectService {
         }       
       )
     }
-    return this.apiService.get('/Project', undefined, httpOptions)
+    return this.apiService.get(`/Project/${id}`, undefined, httpOptions)
   }
 
   updateProject(updatedProject: Project): Observable<Project>{

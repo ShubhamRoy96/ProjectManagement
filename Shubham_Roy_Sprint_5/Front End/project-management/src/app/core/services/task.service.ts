@@ -33,7 +33,7 @@ export class TaskService {
     return this.apiService.get('/Task', undefined, httpOptions)
   }
 
-  getTask(): Observable<Array<ProjectTask>>{
+  getTask(id: number): Observable<ProjectTask>{
     let httpOptions: Object = {
       headers: new HttpHeaders(
         {
@@ -41,7 +41,7 @@ export class TaskService {
         }       
       )
     }
-    return this.apiService.get('/Task', undefined, httpOptions)
+    return this.apiService.get(`/Task/${id}`, undefined, httpOptions)
   }
 
   updateTask(updatedTask: ProjectTask): Observable<ProjectTask>{

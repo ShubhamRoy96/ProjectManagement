@@ -20,12 +20,18 @@ export class UpdateProjectComponent implements OnInit {
     this.currentRoute.params.subscribe((params) =>
       {
         this.id = params['id']
-        this.name = params['name']
-        this.detail = params['detail']
+        // this.name = params['name']
+        // this.detail = params['detail']
       });
   }
 
   ngOnInit(): void {
+    this.projectService.getProject(Number(this.id)).subscribe(data => this.setProject(data))  
+  }
+
+  setProject(project: Project){
+    this.name = project.name;
+    this.detail = project.detail;
   }
 
   updateProject() {

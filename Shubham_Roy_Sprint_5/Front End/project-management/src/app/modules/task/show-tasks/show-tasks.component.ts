@@ -21,7 +21,7 @@ export class ShowTasksComponent implements OnInit {
     this.taskService.getAllTasks().subscribe(data => this.projectTasks = data)
   }
 
-  rowClicked(id: any, project: any, assignedToUser: any, status: number, detail: string){
-    this.router.navigate(['tasks/', id, project, assignedToUser, status, detail])
+  rowClicked(id: any){
+    this.router.navigate(['tasks/', id])
   }
 }

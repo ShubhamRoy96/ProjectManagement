@@ -33,7 +33,7 @@ export class UserService {
     return this.apiService.get('/User', undefined, httpOptions)
   }
 
-  getUser(): Observable<Array<User>>{
+  getUser(id: number): Observable<User>{
     let httpOptions: Object = {
       headers: new HttpHeaders(
         {
@@ -41,7 +41,7 @@ export class UserService {
         }       
       )
     }
-    return this.apiService.get('/User', undefined, httpOptions)
+    return this.apiService.get(`/User/${id}`, undefined, httpOptions)
   }
 
   updateUser(updatedUser: User): Observable<User>{

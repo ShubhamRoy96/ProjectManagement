@@ -22,14 +22,20 @@ export class UpdateUserComponent implements OnInit {
   constructor(private currentRoute: ActivatedRoute, private modalService: NgbModal, private userService: UserService) {
     this.currentRoute.params.subscribe((params) => {
       this.id = params['id'];
-      this.firstName = params['firstName'];
-      this.lastName = params['lastName'];
-      this.email = params['email'];
+      // this.firstName = params['firstName'];
+      // this.lastName = params['lastName'];
+      // this.email = params['email'];
     });
   }
 
   ngOnInit(): void {
+    this.userService.getUser(Number(this.id)).subscribe(data => this.setUser(data))  
+  }
 
+  setUser(user: User){
+    this.firstName = user.firstName;
+    this.lastName = user.lastName;
+    this.email = user.email;
   }
 
   updateUser() {

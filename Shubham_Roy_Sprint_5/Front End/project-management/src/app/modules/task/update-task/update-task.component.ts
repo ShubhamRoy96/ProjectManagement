@@ -19,16 +19,23 @@ export class UpdateTaskComponent implements OnInit {
   detail: string = "";
 
   constructor(private currentRoute: ActivatedRoute, private modalService: NgbModal, private taskService: TaskService) {
-    this.currentRoute.params.subscribe((params) =>
-      {
-        this.id = params['id']
-        this.project = params['project']
-        this.assignedToUser = params['assignedToUser']
-        this.status = params['status']
-        this.detail = params['detail']
-      });
-   }
+    this.currentRoute.params.subscribe((params) => {
+      this.id = params['id']
+      // this.project = params['project']
+      // this.assignedToUser = params['assignedToUser']
+      // this.status = params['status']
+      // this.detail = params['detail']
+    });
+  }
   ngOnInit(): void {
+    this.taskService.getTask(Number(this.id)).subscribe(data => this.setTask(data))
+  }
+
+  setTask(task: ProjectTask) {
+    this.project = task.projectID;
+    this.assignedToUser = task.assignedToUserID;
+    this.status = task.status;
+    this.detail = task.detail;
   }
 
   updateTask() {
@@ -69,7 +76,7 @@ export class UpdateTaskComponent implements OnInit {
     this.taskService.deleteTask(this.id.toString(), httpOptions).subscribe(data => this.taskDeleted(data))
   }
 
-  taskDeleted(message: string){
+  taskDeleted(message: string) {
     const modalRef = this.modalService.open(ModalComponent);
     var compInstance = modalRef.componentInstance;
     compInstance.isNormalButtonsShown = false;

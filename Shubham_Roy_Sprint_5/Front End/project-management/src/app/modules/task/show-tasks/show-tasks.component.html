@@ -25,7 +25,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let task of projectTasks" (click)="rowClicked(task.id, task.projectID, task.assignedToUserID, task.status, task.detail)">
+        <tr *ngFor="let task of projectTasks" (click)="rowClicked(task.id)">
           <td>{{task.id}}</td>
           <td>{{task.projectID}}</td>
           <td>{{task.status}}</td>

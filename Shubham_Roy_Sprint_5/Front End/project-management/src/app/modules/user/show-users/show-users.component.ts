@@ -19,8 +19,8 @@ export class ShowUsersComponent implements OnInit {
     this.userService.getAllUsers().subscribe(data => this.users = data)
   }
 
-  rowClicked(id: number, firstName: string, lastName: string, email: string){
-    this.router.navigate(['users/', id, firstName, lastName, email])
+  rowClicked(id: number){
+    this.router.navigate(['users/', id])
   }
 
 }

@@ -21,7 +21,7 @@ export class ShowProjectsComponent implements OnInit {
     this.projectService.getAllProjects().subscribe(data => this.projects = data)
   }
 
-  rowClicked(id: number, name: string, detail: string){
-    this.router.navigate(['projects/', id, name, detail])
+  rowClicked(id: number){
+    this.router.navigate(['projects/', id])
   }
 }
