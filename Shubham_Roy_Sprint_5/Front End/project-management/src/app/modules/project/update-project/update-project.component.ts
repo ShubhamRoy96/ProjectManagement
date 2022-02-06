@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Project } from 'src/app/core';
@@ -30,10 +30,10 @@ export class UpdateProjectComponent implements OnInit {
 
   updateProject() {
     const updatedProject: Project = new Project(Number(this.id), this.name, this.detail, new Date());
-    this.projectService.updateProject(updatedProject).subscribe(data => this.ProjectUpdated(data))
+    this.projectService.updateProject(updatedProject).subscribe(data => this.projectUpdated(data))
   }
 
-  ProjectUpdated(updatedProject: Project) {
+  projectUpdated(updatedProject: Project) {
     console.log(updatedProject);
     const compInstance = this.modalService.open(ModalComponent).componentInstance;
     compInstance.isNormalButtonsShown = false;
@@ -42,10 +42,36 @@ export class UpdateProjectComponent implements OnInit {
     compInstance.navigateTo = 'projects/showProjects';
   }
 
-  open() {
+  @HostListener('window:click', ['$event'])
+  onWindowClick(event: Event) {
+    if ((event.target as HTMLButtonElement).id == "confirmOperation") {
+      this.deleteTask();
+    }
+  }
+
+  confirmDeletion() {
+
     const modalRef = this.modalService.open(ModalComponent);
-    modalRef.componentInstance.innerHTML = `<strong>Are you sure you want to delete Project : <span class="text-primary">${this.name}</span> ?</strong></p>
-    <p>All information associated to this project will be permanently deleted.
+    var compInstance = modalRef.componentInstance;
+    compInstance.modalTitleText = "Task Deletion";
+    compInstance.innerHTML = `<strong>Are you sure you want to delete the Task <span class="text-primary">${this.id}</span> ?</strong></p>
+    <p>All information associated to this Task will be permanently deleted.
     <span class="text-danger">This operation can not be undone.</span>`;
+  }
+
+  deleteTask() {
+    let httpOptions: Object = {
+      responseType: 'text'
+    }
+    this.projectService.deleteProject(this.id.toString(), httpOptions).subscribe(data => this.projectDeleted(data))
+  }
+
+  projectDeleted(message: string){
+    const modalRef = this.modalService.open(ModalComponent);
+    var compInstance = modalRef.componentInstance;
+    compInstance.isNormalButtonsShown = false;
+    compInstance.modalTitleText = "Success";
+    compInstance.innerHTML = message
+    compInstance.navigateTo = "/tasks/showTasks";
   }
 }
