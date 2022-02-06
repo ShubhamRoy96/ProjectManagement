@@ -19,7 +19,7 @@ const taskRoutes: Routes = [
         loadChildren: ()=> import('./add-task/add-task.module').then(m => m.AddTaskModule)
       },
       {
-        path: ':project/:assignedToUser/:status/:detail',
+        path: ':id/:project/:assignedToUser/:status/:detail',
         loadChildren: ()=> import('./update-task/update-task.module').then(m => m.UpdateTaskModule)
       }
     ]

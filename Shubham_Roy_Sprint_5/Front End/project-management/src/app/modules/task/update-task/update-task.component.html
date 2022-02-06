@@ -8,7 +8,7 @@
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <button class="btn btn-outline-danger me-2" type="button" (click)="deleteTask()">Delete</button> <!--change routerLink to actual functionality-->
             <button class="btn btn-outline-danger me-2" type="button" routerLink="/tasks/showTasks">Cancel</button> <!--change routerLink to actual functionality-->
-            <button class="btn btn-success me-2" type="button" >Save</button> <!--change routerLink to actual functionality (routerLink="/users/addUser")-->
+            <button class="btn btn-success me-2" type="button" (click)="updateTask()">Save</button> <!--change routerLink to actual functionality (routerLink="/users/addUser")-->
           </div>
         </div>
       </div>
@@ -19,7 +19,7 @@
                 <p>Project ID</p>
             </div>
             <div class="col mx-2">
-                <input type="text" class="form-control" aria-describedby="Project ID" placeholder="Enter Project ID" [value]="project">
+                <input [(ngModel)]="project" type="text" class="form-control" aria-describedby="Project ID" placeholder="Enter Project ID">
             </div>
         </div>
         <div class="row my-2">
@@ -27,7 +27,7 @@
                 <p>Assigned to User</p>
             </div>
             <div class="col mx-2">
-                <input type="text" class="form-control" aria-describedby="Assign to User" placeholder="Enter User" [value]="assignedToUser">
+                <input [(ngModel)]="assignedToUser" type="text" class="form-control" aria-describedby="Assign to User" placeholder="Enter User">
             </div>
         </div>
         <div class="row my-2">
@@ -35,7 +35,7 @@
                 <p>Status</p>
             </div>
             <div class="col mx-2">
-                <input type="text" class="form-control" aria-describedby="Status" placeholder="Enter Status" [value]="status">
+                <input [(ngModel)]="status" type="text" class="form-control" aria-describedby="Status" placeholder="Enter Status">
             </div>
         </div>
         <div class="row my-2">
@@ -43,7 +43,7 @@
                 <p>Detail</p>
             </div>
             <div class="col mx-2">
-                <input type="text" class="form-control" aria-describedby="Detail" placeholder="Enter Detail" [value]="detail">
+                <input [(ngModel)]="detail" type="text" class="form-control" aria-describedby="Detail" placeholder="Enter Detail">
             </div>
         </div>
       </div>

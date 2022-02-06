@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectTask } from 'src/app/core';
 import { ApiService } from 'src/app/core/services/api.service';
+import { TaskService } from 'src/app/core/services/task.service';
 import { mockTasks } from './mock-tasks';
 
 @Component({
@@ -12,16 +13,15 @@ import { mockTasks } from './mock-tasks';
 export class ShowTasksComponent implements OnInit {
 
   projectTasks: ProjectTask[] = []
-  constructor(private router: Router, private apiService: ApiService) {
-    // this.projectTasks = mockTasks;
-    apiService.get('/Task').subscribe(data => this.projectTasks = data, err => console.log(err))
+  constructor(private router: Router, private taskService: TaskService) {
    }
 
 
   ngOnInit(): void {
+    this.taskService.getAllTasks().subscribe(data => this.projectTasks = data)
   }
 
-  rowClicked(project: any, assignedToUser: any, status: number, detail: string){
-    this.router.navigate(['tasks/', project, assignedToUser, status, detail])
+  rowClicked(id: any, project: any, assignedToUser: any, status: number, detail: string){
+    this.router.navigate(['tasks/', id, project, assignedToUser, status, detail])
   }
 }

@@ -25,11 +25,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let task of projectTasks" (click)="rowClicked(task.projectId, task.assignedToUser, task.status, task.detail)">
+        <tr *ngFor="let task of projectTasks" (click)="rowClicked(task.id, task.projectID, task.assignedToUserID, task.status, task.detail)">
           <td>{{task.id}}</td>
-          <td>{{task.projectId}}</td>
+          <td>{{task.projectID}}</td>
           <td>{{task.status}}</td>
-          <td>{{task.assignedToUser}}</td>
+          <td>{{task.assignedToUserID}}</td>
           <td>{{task.detail}}</td>
           <td>{{task.createdOn}}</td>
         </tr>      
