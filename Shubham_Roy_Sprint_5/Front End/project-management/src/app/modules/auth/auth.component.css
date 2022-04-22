@@ -1,0 +1,10 @@
+.neumorph {
+  background: #e0e5ec;
+  border-radius: 2%;
+  box-shadow: 9.91px 9.91px 20px #727274, -9.91px -9.91px 20px #FFFFFF;
+}
+.neumorphbtn {
+    background: #e3e4e8;
+    border-radius: 100%;
+    box-shadow: 9.91px 9.91px 20px #727274, -9.91px -9.91px 20px #FFFFFF;
+}

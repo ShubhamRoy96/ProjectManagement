@@ -1,0 +1,20 @@
+<div class="container-fluid px-0 bg-grey">
+<div *ngIf="!router.url.includes('login')" class="row">
+    <app-navbar></app-navbar>
+</div>
+<div class="row vh-100 vw-100">
+    <span *ngIf="router.url.includes('login') || router.url.includes('error'); else showSidebar">
+    </span>
+    <div class="col">
+        <router-outlet></router-outlet>
+    </div>
+    <ng-template #showSidebar>        
+        <div class="col-2 sidebar">
+            <app-sidebar ></app-sidebar>
+        </div>
+    </ng-template>
+</div>
+<div *ngIf="!router.url.includes('login')" class="row">
+    <app-footer></app-footer>
+</div>
+</div>

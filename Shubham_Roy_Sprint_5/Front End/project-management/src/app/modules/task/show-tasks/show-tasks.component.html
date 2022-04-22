@@ -1,0 +1,38 @@
+<div class="my-3">
+    <div class="card shadow bg-body rounded">
+      <div class="row m-3">
+        <div class="col-10 text-start align-middle">
+          <span class="fs-3">TASKS</span>
+        </div>
+        <div class="col-2 justify-content-center align-items-center ">
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-primary me-2" type="button" routerLink="/tasks/addTask">Add Task</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <hr>
+  <table class="table table-hover caption-top my-3">
+      <caption>List of Tasks</caption>
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Project ID</th>
+          <th scope="col">Status</th>
+          <th scope="col">Assigned to User ID</th>
+          <th scope="col">Details</th>
+          <th scope="col">Created On</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of projectTasks" (click)="rowClicked(task.id)">
+          <td>{{task.id}}</td>
+          <td>{{task.projectID}}</td>
+          <td>{{GetStatus(task.status)}}</td>
+          <td>{{task.assignedToUserID}}</td>
+          <td>{{task.detail}}</td>
+          <td>{{task.createdOn}}</td>
+        </tr>      
+      </tbody>
+    </table>
+    </div>
